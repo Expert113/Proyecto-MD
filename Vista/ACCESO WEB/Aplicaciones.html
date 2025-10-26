@@ -1,0 +1,240 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aplicaciones - Proyecto MD</title>
+    <style>
+        :root{
+            --bg:#f5f7fb;
+            --card:#fff;
+            --accent:#2b6cb0;
+            --muted:#6b7280;
+            --shadow: 0 1px 3px rgba(16,24,40,.08);
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        body{ margin:0; background:var(--bg); color:#111; }
+        header{
+            background:linear-gradient(90deg,var(--accent),#1e40af);
+            color:#fff;
+            padding:18px 24px;
+            display:flex;
+            align-items:center;
+            gap:16px;
+            box-shadow: 0 2px 6px rgba(2,6,23,.12);
+        }
+        header h1{ font-size:18px; margin:0; font-weight:600; }
+        .container{ max-width:1100px; margin:20px auto; padding:16px; }
+        .controls{ display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
+        .search {
+            flex:1 1 320px;
+            display:flex;
+            align-items:center;
+            background:var(--card);
+            padding:8px 12px;
+            border-radius:8px;
+            box-shadow:var(--shadow);
+        }
+        .search input{
+            border:0; outline:none; font-size:15px; width:100%;
+            background:transparent;
+        }
+        .sections { display:grid; gap:18px; }
+        .subject {
+            background:var(--card);
+            border-radius:10px;
+            padding:14px;
+            box-shadow:var(--shadow);
+        }
+        .subject h2 { margin:0 0 8px 0; font-size:16px; display:flex; justify-content:space-between; align-items:center; }
+        .cards { display:flex; gap:12px; flex-wrap:wrap; }
+        .app-card {
+            background:linear-gradient(180deg,#fff,#f9fbff);
+            border-radius:8px;
+            padding:10px;
+            width:220px;
+            box-shadow:0 1px 4px rgba(16,24,40,.06);
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+        .app-thumb{
+            width:48px; height:48px; background:#eef2ff; border-radius:8px;
+            display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--accent);
+        }
+        .app-info{ flex:1; }
+        .app-info h3{ margin:0; font-size:14px; }
+        .app-info p{ margin:4px 0 0; font-size:12px; color:var(--muted); }
+        .no-results{ color:var(--muted); padding:12px 0; font-size:14px; }
+        footer{ text-align:center; color:var(--muted); padding:24px 0; font-size:13px; }
+        a.btn {
+            background:rgba(255,255,255,.12);
+            color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:14px;
+            border:1px solid rgba(255,255,255,.08);
+        }
+        @media (max-width:640px){
+            .app-card{ width:100%; }
+            .cards{ flex-direction:column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" onclick="history.back(); return false;" class="btn" title="Volver">← Volver</a>
+        <h1>Aplicaciones</h1>
+    </header>
+
+    <main class="container">
+        <div class="controls">
+            <div class="search" role="search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <input id="searchInput" type="search" placeholder="Buscar por nombre de aplicación..." aria-label="Buscar aplicaciones por nombre" />
+            </div>
+            <select id="subjectFilter" aria-label="Filtrar por materia">
+                <option value="">Todas las materias</option>
+            </select>
+        </div>
+
+        <section id="sections" class="sections" aria-live="polite">
+            <!-- Secciones renderizadas por JavaScript -->
+        </section>
+
+        <footer>
+            Proyecto MD — Vista de aplicaciones
+        </footer>
+    </main>
+
+    <script>
+        // Datos de ejemplo: reemplaza o carga desde tu backend si es necesario
+            const DATA = [
+        { 
+            id:1, 
+            name:"Calculadora Binaria", 
+            subject:"Matemática Discreta", 
+            desc:"Conversiones y operaciones binarias", 
+            link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Binaria.html"
+        },
+        { 
+            id:2, 
+            name:"Calculadora Booleana", 
+            subject:"Matemática Discreta", 
+            desc:"Operaciones con algebra booleana", 
+            link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Booleana.html"
+        },
+        { 
+            id:3, 
+            name:"Solución de Conjuntos", 
+            subject:"Matemática Discreta", 
+            desc:"Operaciones con conjuntos", 
+            link:"http://127.0.0.1:5500/Vista/APLICACIONES/Soluci%C3%B3n%20de%20Conjuntos.html"
+        }
+    ];
+
+        const container = document.getElementById('sections');
+        const searchInput = document.getElementById('searchInput');
+        const subjectFilter = document.getElementById('subjectFilter');
+
+        // Agrupar por materia
+        function groupBySubject(items){
+            return items.reduce((acc, app) => {
+                (acc[app.subject] ??= []).push(app);
+                return acc;
+            }, {});
+        }
+
+        // Renderizar opciones de filtro de materia
+        function initSubjectOptions(items){
+            const subjects = Array.from(new Set(items.map(i => i.subject))).sort();
+            subjects.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s;
+                opt.textContent = s;
+                subjectFilter.appendChild(opt);
+            });
+        }
+
+        // Renderizar todas las secciones (filtrado aplicado)
+        function render(searched='', subject=''){
+            const q = searched.trim().toLowerCase();
+            const filtered = DATA.filter(app => {
+                const matchName = !q || app.name.toLowerCase().includes(q);
+                const matchSubject = !subject || app.subject === subject;
+                return matchName && matchSubject;
+            });
+
+            const grouped = groupBySubject(filtered);
+            container.innerHTML = '';
+
+            const allSubjects = Object.keys(grouped).sort();
+            if(allSubjects.length === 0){
+                const no = document.createElement('div');
+                no.className = 'no-results';
+                no.textContent = 'No se encontraron aplicaciones.';
+                container.appendChild(no);
+                return;
+            }
+
+            allSubjects.forEach(subj=>{
+                const section = document.createElement('article');
+                section.className = 'subject';
+                const header = document.createElement('h2');
+                header.innerHTML = `${subj} <small style="font-weight:400;color:var(--muted);font-size:12px">${grouped[subj].length} aplicación(es)</small>`;
+                section.appendChild(header);
+
+                const cards = document.createElement('div');
+                cards.className = 'cards';
+
+                grouped[subj].forEach(app => {
+                    const card = document.createElement('a');
+                    card.className = 'app-card';
+                    card.href = app.link;
+                    card.title = app.name;
+
+                    const thumb = document.createElement('div');
+                    thumb.className = 'app-thumb';
+                    thumb.textContent = app.name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+
+                    const info = document.createElement('div');
+                    info.className = 'app-info';
+                    const h3 = document.createElement('h3');
+                    h3.textContent = app.name;
+                    const p = document.createElement('p');
+                    p.textContent = app.desc || '';
+
+                    info.appendChild(h3);
+                    info.appendChild(p);
+                    card.appendChild(thumb);
+                    card.appendChild(info);
+                    cards.appendChild(card);
+                });
+
+                section.appendChild(cards);
+                container.appendChild(section);
+            });
+        }
+
+        // Inicialización
+        initSubjectOptions(DATA);
+        render();
+
+        // Eventos
+        let debounceTimer;
+        searchInput.addEventListener('input', (e)=>{
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(()=>{
+                render(e.target.value, subjectFilter.value);
+            }, 180);
+        });
+
+        subjectFilter.addEventListener('change', ()=> {
+            render(searchInput.value, subjectFilter.value);
+        });
+
+        // Permite búsqueda rápida con tecla Enter enfocada en input
+        searchInput.addEventListener('keydown', (e)=>{
+            if(e.key === 'Escape') { searchInput.value=''; render('', subjectFilter.value); }
+        });
+    </script>
+</body>
+</html>
