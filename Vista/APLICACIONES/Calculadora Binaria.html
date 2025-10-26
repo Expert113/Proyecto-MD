@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Conversión de Bases Numéricas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #038e07 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #038e07 0%, #038e07 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: #e8e8e8;
+        }
+
+        .tab.active {
+            background: white;
+            color: #000000;
+            border-bottom: 3px solid #000000;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #038e07;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #038e07 0%, #038e07 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #038e07;
+        }
+
+        .result-value {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .process-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .process-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #038e07;
+            margin-bottom: 15px;
+        }
+
+        .process-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .process-table th {
+            background: #038e07;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .process-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .process-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .result-final {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #037907 0%, #037907 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .test-table th {
+            background: #037907;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .test-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .test-table tr:hover td {
+            background: #f8f9fa;
+        }
+
+        .status-correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-error {
+            color: #038e07;
+            font-weight: bold;
+        }
+
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #037907 0%, #037907 100%);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #037907;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Conversión de Bases Numéricas</h1>
+            <p>Convierte números decimales a Binario, Octal y Hexadecimal</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('principal')">Principal</button>
+            <button class="tab" onclick="showTab('trabajo')">Hoja de Trabajo</button>
+            <button class="tab" onclick="showTab('pruebas')">✓ Pruebas</button>
+        </div>
+
+        <div class="content">
+            <!-- TAB PRINCIPAL -->
+            <div id="principal" class="tab-content active">
+                <div class="input-group">
+                    <label>Ingrese un número decimal (0-1000):</label>
+                    <input type="number" id="inputDecimal" min="0" max="1000" placeholder="Ej: 566">
+                </div>
+                <button class="btn" onclick="convertir()">Convertir</button>
+                
+                <div id="resultadosPrincipal"></div>
+            </div>
+
+            <!-- TAB HOJA DE TRABAJO -->
+            <div id="trabajo" class="tab-content">
+                <div class="input-group">
+                    <label>Número a analizar:</label>
+                    <input type="number" id="inputTrabajo" min="0" max="1000" placeholder="Ej: 566">
+                </div>
+                <button class="btn" onclick="mostrarProceso()">Ver Proceso Detallado</button>
+                
+                <div id="procesoDetallado"></div>
+            </div>
+
+            <!-- TAB PRUEBAS -->
+            <div id="pruebas" class="tab-content">
+                <button class="btn" onclick="ejecutarPruebas()">Ejecutar Casos de Prueba</button>
+                
+                <div id="resultadosPruebas"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function decimalABinario(numero) {
+            if (numero === 0) return "0";
+            let binario = "";
+            let temp = numero;
+            while (temp > 0) {
+                binario = (temp % 2) + binario;
+                temp = Math.floor(temp / 2);
+            }
+            return binario;
+        }
+
+        function decimalAOctal(numero) {
+            if (numero === 0) return "0";
+            let octal = "";
+            let temp = numero;
+            while (temp > 0) {
+                octal = (temp % 8) + octal;
+                temp = Math.floor(temp / 8);
+            }
+            return octal;
+        }
+
+        function decimalAHexadecimal(numero) {
+            if (numero === 0) return "0";
+            let hexadecimal = "";
+            let temp = numero;
+            const digitos = "0123456789ABCDEF";
+            while (temp > 0) {
+                hexadecimal = digitos[temp % 16] + hexadecimal;
+                temp = Math.floor(temp / 16);
+            }
+            return hexadecimal;
+        }
+
+        function convertir() {
+            const input = document.getElementById('inputDecimal');
+            const numero = parseInt(input.value);
+            
+            if (isNaN(numero) || numero < 0 || numero > 1000) {
+                document.getElementById('resultadosPrincipal').innerHTML = 
+                    '<div class="error-message">❌ Por favor ingrese un número válido entre 0 y 1000</div>';
+                return;
+            }
+
+            const binario = decimalABinario(numero);
+            const octal = decimalAOctal(numero);
+            const hexadecimal = decimalAHexadecimal(numero);
+
+            document.getElementById('resultadosPrincipal').innerHTML = `
+                <div class="results">
+                    <div class="result-item">
+                        <span class="result-label">DECIMAL:</span>
+                        <span class="result-value">${numero}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">BINARIO:</span>
+                        <span class="result-value">${binario}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">OCTAL:</span>
+                        <span class="result-value">${octal}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">HEXADECIMAL:</span>
+                        <span class="result-value">${hexadecimal}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generarProcesoConversion(numero, base, nombreBase) {
+            if (numero === 0) {
+                return `
+                    <div class="process-box">
+                        <div class="process-title">Conversión a ${nombreBase} (Base ${base})</div>
+                        <p>El número 0 en cualquier base es 0</p>
+                        <div class="result-final">Resultado: 0</div>
+                    </div>
+                `;
+            }
+
+            let temp = numero;
+            let pasos = [];
+            const digitos = "0123456789ABCDEF";
+
+            while (temp > 0) {
+                const cociente = Math.floor(temp / base);
+                const residuo = temp % base;
+                const residuoMostrar = base === 16 && residuo > 9 ? digitos[residuo] : residuo;
+                pasos.push({ division: temp, cociente, residuo: residuoMostrar });
+                temp = cociente;
+            }
+
+            const resultado = pasos.map(p => p.residuo).reverse().join('');
+
+            let html = `
+                <div class="process-box">
+                    <div class="process-title">Conversión a ${nombreBase} (Base ${base})</div>
+                    <p>Número decimal: <strong>${numero}</strong></p>
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>División</th>
+                                <th>Cociente</th>
+                                <th>Residuo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            pasos.forEach(paso => {
+                html += `
+                    <tr>
+                        <td>${paso.division} ÷ ${base}</td>
+                        <td>${paso.cociente}</td>
+                        <td>${paso.residuo}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                    <div class="result-final">Resultado (residuos de abajo hacia arriba): ${resultado}</div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function mostrarProceso() {
+            const input = document.getElementById('inputTrabajo');
+            const numero = parseInt(input.value);
+            
+            if (isNaN(numero) || numero < 0 || numero > 1000) {
+                document.getElementById('procesoDetallado').innerHTML = 
+                    '<div class="error-message">❌ Por favor ingrese un número válido entre 0 y 1000</div>';
+                return;
+            }
+
+            const procesoBinario = generarProcesoConversion(numero, 2, 'BINARIO');
+            const procesoOctal = generarProcesoConversion(numero, 8, 'OCTAL');
+            const procesoHexadecimal = generarProcesoConversion(numero, 16, 'HEXADECIMAL');
+
+            document.getElementById('procesoDetallado').innerHTML = 
+                procesoBinario + procesoOctal + procesoHexadecimal;
+        }
+
+        function ejecutarPruebas() {
+            const casosPrueba = [
+                { decimal: 0, binario: "0", octal: "0", hexadecimal: "0" },
+                { decimal: 1, binario: "1", octal: "1", hexadecimal: "1" },
+                { decimal: 10, binario: "1010", octal: "12", hexadecimal: "A" },
+                { decimal: 15, binario: "1111", octal: "17", hexadecimal: "F" },
+                { decimal: 16, binario: "10000", octal: "20", hexadecimal: "10" },
+                { decimal: 100, binario: "1100100", octal: "144", hexadecimal: "64" },
+                { decimal: 255, binario: "11111111", octal: "377", hexadecimal: "FF" },
+                { decimal: 500, binario: "111110100", octal: "764", hexadecimal: "1F4" },
+                { decimal: 566, binario: "1000110110", octal: "1066", hexadecimal: "236" },
+                { decimal: 1000, binario: "1111101000", octal: "1750", hexadecimal: "3E8" }
+            ];
+
+            let errores = 0;
+            let html = `
+                <table class="test-table">
+                    <thead>
+                        <tr>
+                            <th>Decimal</th>
+                            <th>Binario</th>
+                            <th>Octal</th>
+                            <th>Hexadecimal</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            casosPrueba.forEach(caso => {
+                const binCalculado = decimalABinario(caso.decimal);
+                const octCalculado = decimalAOctal(caso.decimal);
+                const hexCalculado = decimalAHexadecimal(caso.decimal);
+
+                const esCorrecto = 
+                    binCalculado === caso.binario &&
+                    octCalculado === caso.octal &&
+                    hexCalculado === caso.hexadecimal;
+
+                if (!esCorrecto) errores++;
+
+                const estadoClass = esCorrecto ? 'status-correct' : 'status-error';
+                const estadoTexto = esCorrecto ? '✓ CORRECTO' : '✗ ERROR';
+
+                html += `
+                    <tr>
+                        <td>${caso.decimal}</td>
+                        <td>${binCalculado}</td>
+                        <td>${octCalculado}</td>
+                        <td>${hexCalculado}</td>
+                        <td class="${estadoClass}">${estadoTexto}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+                <div class="summary">
+                    Resultado: ${casosPrueba.length - errores}/${casosPrueba.length} pruebas exitosas
+                </div>
+            `;
+
+            document.getElementById('resultadosPruebas').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
