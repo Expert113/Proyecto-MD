@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Álgebra Booleana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #a6189d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeIn 0.5s;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #a6189d 0%, #a6189d 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .input-section {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #a6189d;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #a6189d 0%, #a6189d 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .results {
+            padding: 30px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-section {
+            margin-bottom: 30px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #a6189d;
+        }
+
+        .result-section h2 {
+            color: #a6189d;
+            margin-bottom: 15px;
+        }
+
+        .variables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .variable-badge {
+            background: #a6189d;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #a6189d;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #ffffff;
+        }
+
+        .karnaugh {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .karnaugh-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 1.05em;
+        }
+
+        .karnaugh-table th,
+        .karnaugh-table td {
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #ddd;
+            min-width: 56px;
+        }
+
+        .karnaugh-table th {
+            background: #a6189d;
+            color: white;
+            font-weight: 700;
+        }
+
+        .karnaugh-table caption {
+            caption-side: top;
+            text-align: left;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #a6189d;
+        }
+
+        .karnaugh-table td {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .simplified {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .error {
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .info-box {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #a6189d;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calculadora de Álgebra Booleana</h1>
+            <p>Analiza expresiones booleanas con hasta 5 variables</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="expression">Expresión Booleana:</label>
+                <input type="text" id="expression" placeholder="Ejemplo: (A y B) v ~C">
+                
+                <div class="info-box">
+                    <strong>Operadores disponibles:</strong>
+                    <ul>
+                        <li><strong>y</strong> o <strong>&</strong> : AND (conjunción)</li>
+                        <li><strong>v</strong> o <strong>|</strong> : OR (disyunción)</li>
+                        <li><strong>~</strong> : NOT (negación)</li>
+                        <li><strong>--></strong> : Condicional (implicación)</li>
+                        <li><strong><--></strong> : Bicondicional (equivalencia)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="calcular()">Calcular</button>
+            
+            <div class="error" id="error"></div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="result-section">
+                <h2>1. Variables Identificadas</h2>
+                <div class="variables" id="variables"></div>
+            </div>
+
+            <div class="result-section">
+                <h2>2. Tabla de Verdad</h2>
+                <div id="tabla-verdad"></div>
+            </div>
+
+            <div class="result-section">
+                <h2>3. Mapa de Karnaugh</h2>
+                <div class="karnaugh" id="karnaugh"></div>
+            </div>
+
+            <div class="result-section">
+                <h2>4. Expresión Desarrollada</h2>
+                <div class="simplified" id="simplified"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CalculadoraBooleana {
+            constructor(expresion) {
+                this.expresionOriginal = expresion;
+                this.variables = this.identificarVariables(expresion);
+                this.nVars = this.variables.length;
+            }
+
+            identificarVariables(expr) {
+                const variables = new Set();
+                for (let i = 0; i < expr.length; i++) {
+                    const char = expr[i];
+                    if (/[A-Za-z]/.test(char) && char !== 'y' && char !== 'v') {
+                        variables.add(char);
+                    }
+                }
+                return Array.from(variables).sort();
+            }
+
+            reemplazarVariables(expr, valores) {
+                let resultado = "";
+                for (let i = 0; i < expr.length; i++) {
+                    const char = expr[i];
+                    if (this.variables.includes(char)) {
+                        resultado += valores[char] ? "true" : "false";
+                    } else {
+                        resultado += char;
+                    }
+                }
+                return resultado;
+            }
+
+            evaluar(valores) {
+                let expr = this.expresionOriginal.replace(/\s/g, '');
+                
+                expr = this.reemplazarVariables(expr, valores);
+                
+                while (expr.includes('~true') || expr.includes('~false')) {
+                    expr = expr.replace(/~true/g, 'false');
+                    expr = expr.replace(/~false/g, 'true');
+                }
+                
+                expr = expr.replace(/y/g, ' && ');
+                expr = expr.replace(/v/g, ' || ');
+                
+                while (expr.includes('-->')) {
+                    const match = expr.match(/(true|false)\s*-->\s*(true|false)/);
+                    if (match) {
+                        const a = match[1] === 'true';
+                        const b = match[2] === 'true';
+                        const resultado = !a || b;
+                        expr = expr.replace(match[0], resultado.toString());
+                    } else {
+                        const match2 = expr.match(/\((true|false)\)\s*-->\s*\((true|false)\)/);
+                        if (match2) {
+                            const a = match2[1] === 'true';
+                            const b = match2[2] === 'true';
+                            const resultado = !a || b;
+                            expr = expr.replace(match2[0], resultado.toString());
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                
+                while (expr.includes('<-->')) {
+                    const match = expr.match(/(true|false)\s*<-->\s*(true|false)/);
+                    if (match) {
+                        const a = match[1] === 'true';
+                        const b = match[2] === 'true';
+                        const resultado = a === b;
+                        expr = expr.replace(match[0], resultado.toString());
+                    } else {
+                        const match2 = expr.match(/\((true|false)\)\s*<-->\s*\((true|false)\)/);
+                        if (match2) {
+                            const a = match2[1] === 'true';
+                            const b = match2[2] === 'true';
+                            const resultado = a === b;
+                            expr = expr.replace(match2[0], resultado.toString());
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                
+                try {
+                    return eval(expr);
+                } catch (e) {
+                    console.error("Error evaluando:", expr, e);
+                    return false;
+                }
+            }
+
+            generarTablaVerdad() {
+                const combinaciones = this.generarCombinaciones();
+                const resultados = [];
+                const tabla = [];
+
+                for (const comb of combinaciones) {
+                    const valores = {};
+                    this.variables.forEach((v, i) => {
+                        valores[v] = comb[i];
+                    });
+                    const resultado = this.evaluar(valores);
+                    tabla.push([...comb, resultado]);
+                    resultados.push(resultado);
+                }
+
+                return { tabla, resultados };
+            }
+
+            generarCombinaciones() {
+                const n = this.nVars;
+                const total = Math.pow(2, n);
+                const combinaciones = [];
+
+                for (let i = 0; i < total; i++) {
+                    const comb = [];
+                    for (let j = n - 1; j >= 0; j--) {
+                        comb.push((i & (1 << j)) !== 0);
+                    }
+                    combinaciones.push(comb);
+                }
+
+                return combinaciones;
+            }
+
+            generarMapaKarnaugh(resultados) {
+                if (this.nVars === 2) return this.karnaugh2var(resultados);
+                if (this.nVars === 3) return this.karnaugh3var(resultados);
+                if (this.nVars === 4) return this.karnaugh4var(resultados);
+                if (this.nVars === 5) return this.karnaugh5var(resultados);
+                return "<div>Mapa de Karnaugh disponible solo para 2-5 variables</div>";
+            }
+
+            karnaugh2var(res) {
+                const [v1, v2] = this.variables;
+                return `
+<table class="karnaugh-table" aria-label="Mapa de Karnaugh 2 variables">
+  <caption>Mapa de Karnaugh (2 variables)</caption>
+  <thead>
+    <tr><th></th><th>${v2}=0</th><th>${v2}=1</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>${v1}=0</th><td>${+res[0]}</td><td>${+res[1]}</td></tr>
+    <tr><th>${v1}=1</th><td>${+res[2]}</td><td>${+res[3]}</td></tr>
+  </tbody>
+</table>`;
+            }
+
+            karnaugh3var(res) {
+                const [v1, v2, v3] = this.variables;
+                const indices = [0, 1, 3, 2, 4, 5, 7, 6];
+                const valores = indices.map(i => res[i]);
+                return `
+<table class="karnaugh-table" aria-label="Mapa de Karnaugh 3 variables">
+  <caption>Mapa de Karnaugh (3 variables)</caption>
+  <thead>
+    <tr><th></th><th>${v2}${v3}=00</th><th>${v2}${v3}=01</th><th>${v2}${v3}=11</th><th>${v2}${v3}=10</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>${v1}=0</th><td>${+valores[0]}</td><td>${+valores[1]}</td><td>${+valores[2]}</td><td>${+valores[3]}</td></tr>
+    <tr><th>${v1}=1</th><td>${+valores[4]}</td><td>${+valores[5]}</td><td>${+valores[6]}</td><td>${+valores[7]}</td></tr>
+  </tbody>
+</table>`;
+            }
+
+            karnaugh4var(res) {
+                const [v1, v2, v3, v4] = this.variables;
+                const indices = [0, 1, 3, 2, 4, 5, 7, 6, 12, 13, 15, 14, 8, 9, 11, 10];
+                const valores = indices.map(i => res[i]);
+                return `
+<table class="karnaugh-table" aria-label="Mapa de Karnaugh 4 variables">
+  <caption>Mapa de Karnaugh (4 variables)</caption>
+  <thead>
+    <tr><th>${v1}${v2}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>00</th><td>${+valores[0]}</td><td>${+valores[1]}</td><td>${+valores[2]}</td><td>${+valores[3]}</td></tr>
+    <tr><th>01</th><td>${+valores[4]}</td><td>${+valores[5]}</td><td>${+valores[6]}</td><td>${+valores[7]}</td></tr>
+    <tr><th>11</th><td>${+valores[8]}</td><td>${+valores[9]}</td><td>${+valores[10]}</td><td>${+valores[11]}</td></tr>
+    <tr><th>10</th><td>${+valores[12]}</td><td>${+valores[13]}</td><td>${+valores[14]}</td><td>${+valores[15]}</td></tr>
+  </tbody>
+</table>`;
+            }
+
+            karnaugh5var(res) {
+                const [v1, v2, v3, v4, v5] = this.variables;
+                const indices0 = [0, 1, 3, 2, 4, 5, 7, 6, 12, 13, 15, 14, 8, 9, 11, 10];
+                const indices1 = [16, 17, 19, 18, 20, 21, 23, 22, 28, 29, 31, 30, 24, 25, 27, 26];
+                const valores0 = indices0.map(i => res[i]);
+                const valores1 = indices1.map(i => res[i]);
+                
+                return `
+<div>
+  <table class="karnaugh-table" aria-label="Mapa de Karnaugh 5 variables - ${v1}=0">
+    <caption>Mapa de Karnaugh (5 variables) — ${v1}=0</caption>
+    <thead>
+      <tr><th>${v2}${v5}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr>
+    </thead>
+    <tbody>
+      <tr><th>00</th><td>${+valores0[0]}</td><td>${+valores0[1]}</td><td>${+valores0[2]}</td><td>${+valores0[3]}</td></tr>
+      <tr><th>01</th><td>${+valores0[4]}</td><td>${+valores0[5]}</td><td>${+valores0[6]}</td><td>${+valores0[7]}</td></tr>
+      <tr><th>11</th><td>${+valores0[8]}</td><td>${+valores0[9]}</td><td>${+valores0[10]}</td><td>${+valores0[11]}</td></tr>
+      <tr><th>10</th><td>${+valores0[12]}</td><td>${+valores0[13]}</td><td>${+valores0[14]}</td><td>${+valores0[15]}</td></tr>
+    </tbody>
+  </table>
+
+  <table class="karnaugh-table" aria-label="Mapa de Karnaugh 5 variables - ${v1}=1" style="margin-top:16px;">
+    <caption>Mapa de Karnaugh (5 variables) — ${v1}=1</caption>
+    <thead>
+      <tr><th>${v2}${v5}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr>
+    </thead>
+    <tbody>
+      <tr><th>00</th><td>${+valores1[0]}</td><td>${+valores1[1]}</td><td>${+valores1[2]}</td><td>${+valores1[3]}</td></tr>
+      <tr><th>01</th><td>${+valores1[4]}</td><td>${+valores1[5]}</td><td>${+valores1[6]}</td><td>${+valores1[7]}</td></tr>
+      <tr><th>11</th><td>${+valores1[8]}</td><td>${+valores1[9]}</td><td>${+valores1[10]}</td><td>${+valores1[11]}</td></tr>
+      <tr><th>10</th><td>${+valores1[12]}</td><td>${+valores1[13]}</td><td>${+valores1[14]}</td><td>${+valores1[15]}</td></tr>
+    </tbody>
+  </table>
+</div>`;
+            }
+
+            simplificar(resultados) {
+                const minterms = resultados.map((r, i) => r ? i : -1).filter(i => i >= 0);
+                
+                if (minterms.length === 0) return "0";
+                if (minterms.length === Math.pow(2, this.nVars)) return "1";
+                
+                const terminos = minterms.map(m => {
+                    const binario = m.toString(2).padStart(this.nVars, '0');
+                    const termino = binario.split('').map((bit, i) => {
+                        return bit === '1' ? this.variables[i] : `~${this.variables[i]}`;
+                    });
+                    return `(${termino.join(' y ')})`;
+                });
+                
+                if (terminos.length <= 6) {
+                    return terminos.join(' v ');
+                } else {
+                    return `${terminos[0]} v ... v ${terminos[terminos.length - 1]} [${terminos.length} términos]`;
+                }
+            }
+        }
+
+        function calcular() {
+            const expresion = document.getElementById('expression').value.trim();
+            const errorDiv = document.getElementById('error');
+            const resultsDiv = document.getElementById('results');
+
+            errorDiv.classList.remove('show');
+            resultsDiv.classList.remove('show');
+
+            if (!expresion) {
+                errorDiv.textContent = 'Por favor, ingresa una expresión booleana.';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            try {
+                const calc = new CalculadoraBooleana(expresion);
+
+                if (calc.nVars === 0) {
+                    errorDiv.textContent = 'No se encontraron variables en la expresión.';
+                    errorDiv.classList.add('show');
+                    return;
+                }
+
+                if (calc.nVars > 5) {
+                    errorDiv.textContent = 'La calculadora soporta hasta 5 variables.';
+                    errorDiv.classList.add('show');
+                    return;
+                }
+
+                // Variables
+                const variablesDiv = document.getElementById('variables');
+                variablesDiv.innerHTML = calc.variables.map(v => 
+                    `<span class="variable-badge">${v}</span>`
+                ).join('');
+
+                // Tabla de verdad
+                const { tabla, resultados } = calc.generarTablaVerdad();
+                const tablaDiv = document.getElementById('tabla-verdad');
+                
+                let tablaHTML = '<table><thead><tr>';
+                calc.variables.forEach(v => {
+                    tablaHTML += `<th>${v}</th>`;
+                });
+                tablaHTML += '<th>Resultado</th></tr></thead><tbody>';
+
+                tabla.forEach(fila => {
+                    tablaHTML += '<tr>';
+                    fila.forEach(val => {
+                        tablaHTML += `<td>${val ? 1 : 0}</td>`;
+                    });
+                    tablaHTML += '</tr>';
+                });
+
+                tablaHTML += '</tbody></table>';
+                tablaDiv.innerHTML = tablaHTML;
+
+                // Mapa de Karnaugh
+                const karnaughDiv = document.getElementById('karnaugh');
+                karnaughDiv.innerHTML = calc.generarMapaKarnaugh(resultados);
+
+                // Expresión simplificada
+                const simplifiedDiv = document.getElementById('simplified');
+                simplifiedDiv.textContent = calc.simplificar(resultados);
+
+                resultsDiv.classList.add('show');
+
+            } catch (e) {
+                errorDiv.textContent = `Error: ${e.message}. Verifica que la expresión esté correctamente escrita.`;
+                errorDiv.classList.add('show');
+                console.error(e);
+            }
+        }
+
+        // Permitir calcular con Enter
+        document.getElementById('expression').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calcular();
+            }
+        });
+    </script>
+</body>
+</html>
