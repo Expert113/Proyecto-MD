@@ -1,14 +1,4 @@
 
-
-# Proyecto MD - Calculadora booleana con simplificación y mapa de Karnaugh
-
-# Integrantes:
-# Carlos Colorado García
-# Jesús Antonio Cobos Juarez
-# Jesus Joel Hernández Rivera
-
-# Bibliotecas y módulos necesarios:
-
 import re
 from itertools import product
 from typing import List, Dict, Tuple

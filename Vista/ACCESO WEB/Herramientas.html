@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivero de Documentos</title>
+    <style>
+        :root {
+            --bg1: #1a0000;
+            --bg2: #400000;
+            --bg3: #a00000;
+            --accent: #ffd86b;
+            --card-border: rgba(0,0,0,0.6);
+            --radius: 12px;
+            font-family: "Inter", system-ui, "Segoe UI", Roboto, Arial;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: radial-gradient(circle at center, var(--bg3) 0%, var(--bg2) 45%, var(--bg1) 100%);
+            color: #f2f2f2;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 28px auto;
+            padding: 28px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 20px;
+        }
+
+        .back {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .back::before {
+            content: "←";
+            opacity: 0.9;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .search-box:focus {
+            border-color: rgba(255,255,255,0.25);
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
+            box-shadow: 0 0 20px rgba(255,0,0,0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.6rem;
+            letter-spacing: 0.6px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+
+        header p {
+            margin: 12px 0 0;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.85);
+            text-align: center;
+        }
+
+        .topics-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .topic {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+            border-radius: var(--radius);
+            padding: 12px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45), 0 0 18px rgba(0,0,0,0.25) inset;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow: 0 0 20px 4px rgba(255,0,0,0.06), 0 0 6px 1px rgba(0,0,0,0.6) inset;
+        }
+
+        .topic-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topic-header:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .topic-header h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .topic-icon {
+            font-size: 1.5em;
+            transition: transform 0.35s ease;
+            opacity: 0.8;
+        }
+
+        .topic.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .documents-list {
+            display: none;
+            padding: 16px 20px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topic.active .documents-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+            transition: all 0.35s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-item::before {
+            content: "";
+            position: absolute;
+            bottom: 6px;
+            left: 10px;
+            right: 10px;
+            height: 4px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,255,255,0.05));
+            box-shadow: 0 4px 14px rgba(0,0,0,0.6) inset;
+        }
+
+        .document-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 46px rgba(0,0,0,0.6), 0 0 30px rgba(255,0,0,0.3);
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
+        }
+
+        .document-icon {
+            font-size: 2.2em;
+            margin-right: 18px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-title {
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 6px;
+            color: rgba(255,255,255,0.95);
+        }
+
+        .document-meta {
+            font-size: 0.88em;
+            color: rgba(255,255,255,0.65);
+        }
+
+        .download-btn {
+            background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.1));
+            color: rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        footer {
+            margin-top: 32px;
+            padding: 18px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(255,255,255,0.05));
+            border: 1px solid rgba(0,0,0,0.6);
+        }
+
+        .author {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.95);
+            line-height: 1.1;
+        }
+
+        .author small {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 880px) {
+            .container {
+                padding: 20px;
+            }
+
+            .top-nav {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .search-container {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .header-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .topic-header h3 {
+                font-size: 1.2em;
+            }
+
+            .document-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .download-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <a class="back" href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Center%20Web.html">Volver al Inicio</a>
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchBox" placeholder="Buscar documentos..." oninput="buscarDocumentos()">
+            </div>
+        </div>
+
+        <header>
+            <h1>HERRAMIENTAS DIGITAL</h1>
+            <img src="https://static.vecteezy.com/system/resources/previews/017/444/146/original/batman-logo-free-png.png" alt="Logo" class="header-logo">
+        </header>
+        <p style="text-align:center; margin-top:-20px; margin-bottom:32px; font-size:1rem; color:rgba(255,255,255,0.85);">Sistema de gestión y archivo</p>
+
+        <section class="topics-section" id="topicsSection"></section>
+
+        <footer>
+            <div class="author">
+                <strong>Sistema de Documentos</strong>
+                <small>Versión 1.0</small>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DE DOCUMENTOS
+        // Aquí el desarrollador puede agregar sus documentos organizados por tema
+        const documentosData = {
+            "PYTHON": [
+                {
+                    titulo: "Manual de Empleado 2025",
+                    formato: "PYTHON",
+                    tamaño: "2.5 KB",
+                    fecha: "15/10/2025",
+                    url: "http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Booleana.html"
+                },
+                {
+                    titulo: "Políticas de Trabajo Remoto",
+                    formato: "PYTHON",
+                    tamaño: "890 KB",
+                    fecha: "10/10/2025",
+                    url: "#"
+                }
+            ],
+            "PHP": [
+                {
+                    titulo: "Presupuesto Anual 2025",
+                    formato: "PHP",
+                    tamaño: "3.1 KB",
+                    fecha: "20/10/2025",
+                    url: "#"
+                },
+                {
+                    titulo: "Reporte Trimestral Q3",
+                    formato: "PHP",
+                    tamaño: "5.4 KB",
+                    fecha: "18/10/2025",
+                    url: "#"
+                }
+            ],
+            "JAVA SCRIPT": [
+                {
+                    titulo: "Plan de Marketing Digital",
+                    formato: "JAVA SCRIPT",
+                    tamaño: "4.2 KB",
+                    fecha: "22/10/2025",
+                    url: "#"
+                },
+                {
+                    titulo: "Guía de Marca",
+                    formato: "JAVA SCRIPT",
+                    tamaño: "12.8 KB",
+                    fecha: "12/10/2025",
+                    url: "#"
+                }
+            ],
+            "CSS": [
+                {
+                    titulo: "Documentación API v2.0",
+                    formato: "CSS",
+                    tamaño: "6.7 KB",
+                    fecha: "25/10/2025",
+                    url: ""
+                },
+                {
+                    titulo: "Manual de Instalación",
+                    formato: "CSS",
+                    tamaño: "1.9 KB",
+                    fecha: "20/10/2025",
+                    url: "#"
+                }
+            ]
+        };
+
+        function getIconoFormato(formato) {
+            const iconos = {
+                'PDF': '',
+                'DOCX': '',
+                'XLSX': '',
+                'PPTX': '',
+                'ZIP': '',
+                'TXT': ''
+            };
+            return iconos[formato] || '📄';
+        }
+
+        function crearDocumentos() {
+            const section = document.getElementById('topicsSection');
+            
+            Object.keys(documentosData).forEach((tema, index) => {
+                const documentos = documentosData[tema];
+                
+                const topicDiv = document.createElement('div');
+                topicDiv.className = 'topic';
+                
+                topicDiv.innerHTML = `
+                    <div class="topic-header" onclick="toggleTopic(${index})">
+                        <h3>${tema}</h3>
+                        <span class="topic-icon">▼</span>
+                    </div>
+                    <div class="documents-list">
+                        ${documentos.map(doc => `
+                            <div class="document-item">
+                                <div class="document-icon">${getIconoFormato(doc.formato)}</div>
+                                <div class="document-info">
+                                    <div class="document-title">${doc.titulo}</div>
+                                    <div class="document-meta">${doc.formato} • ${doc.tamaño} • ${doc.fecha}</div>
+                                </div>
+                                <button class="download-btn" onclick="descargarDocumento('${doc.titulo}', '${doc.url}')">
+                                    Descargar
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                section.appendChild(topicDiv);
+            });
+        }
+
+        function toggleTopic(index) {
+            const topics = document.querySelectorAll('.topic');
+            topics[index].classList.toggle('active');
+        }
+
+        function descargarDocumento(titulo, url) {
+            // Aquí el desarrollador debe implementar la lógica de descarga real
+            alert(`Descargando: ${titulo}\n\nNota: El desarrollador debe configurar la URL real del documento.`);
+            // Para descarga real:
+            // window.open(url, '_blank');
+        }
+
+        function buscarDocumentos() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const topics = document.querySelectorAll('.topic');
+            
+            topics.forEach(topic => {
+                const documentItems = topic.querySelectorAll('.document-item');
+                let hasVisibleDocs = false;
+                
+                documentItems.forEach(item => {
+                    const title = item.querySelector('.document-title').textContent.toLowerCase();
+                    const meta = item.querySelector('.document-meta').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || meta.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                        hasVisibleDocs = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Mostrar el tema si tiene documentos visibles
+                if (searchTerm && hasVisibleDocs) {
+                    topic.classList.add('active');
+                } else if (!searchTerm) {
+                    topic.classList.remove('active');
+                }
+                
+                // Ocultar tema si no tiene documentos visibles
+                topic.style.display = (searchTerm && !hasVisibleDocs) ? 'none' : 'flex';
+            });
+        }
+
+        // Inicializar la página
+        crearDocumentos();
+    </script>
+</body>
+</html>
