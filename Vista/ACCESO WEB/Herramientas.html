@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -81,7 +82,7 @@
         .search-box:focus {
             border-color: rgba(255,255,255,0.25);
             background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
-            box-shadow: 0 0 20px rgba(255,0,0,0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         header {
@@ -206,7 +207,7 @@
             right: 10px;
             height: 4px;
             border-radius: 6px;
-            background: linear-gradient(90deg, rgba(255,0,0,0.2), rgba(255,255,255,0.05));
+            background: linear-gradient(90deg, rgb(255, 255, 255), rgba(255,255,255,0.05));
             box-shadow: 0 4px 14px rgba(0,0,0,0.6) inset;
         }
 
@@ -329,14 +330,14 @@
 <body>
     <div class="container">
         <div class="top-nav">
-            <a class="back" href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Center%20Web.html">Volver al Inicio</a>
+            <a class="back" href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/1-Center%20Web.html">Volver al Inicio</a>
             <div class="search-container">
                 <input type="text" class="search-box" id="searchBox" placeholder="Buscar documentos..." oninput="buscarDocumentos()">
             </div>
         </div>
 
         <header>
-            <h1>HERRAMIENTAS DIGITAL</h1>
+            <h1>HERRAMIENTAS DIGITALES</h1>
             <img src="https://static.vecteezy.com/system/resources/previews/017/444/146/original/batman-logo-free-png.png" alt="Logo" class="header-logo">
         </header>
         <p style="text-align:center; margin-top:-20px; margin-bottom:32px; font-size:1rem; color:rgba(255,255,255,0.85);">Sistema de gestión y archivo</p>
@@ -357,14 +358,14 @@
         const documentosData = {
             "PYTHON": [
                 {
-                    titulo: "Manual de Empleado 2025",
+                    titulo: "Calculadora Booleana",
                     formato: "PYTHON",
                     tamaño: "2.5 KB",
                     fecha: "15/10/2025",
-                    url: "http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Booleana.html"
+                    url: "http://127.0.0.1:5500/Controlador/C%C3%B3digos/L%C3%B3gica%20Booleana.py"
                 },
                 {
-                    titulo: "Políticas de Trabajo Remoto",
+                    titulo: "Calculadora Binaria",
                     formato: "PYTHON",
                     tamaño: "890 KB",
                     fecha: "10/10/2025",
@@ -428,7 +429,11 @@
                 'XLSX': '',
                 'PPTX': '',
                 'ZIP': '',
-                'TXT': ''
+                'TXT': '',
+                'PYTHON': '',
+                'PHP': '',
+                'JAVA SCRIPT': '',
+                'CSS': ''
             };
             return iconos[formato] || '📄';
         }
@@ -473,10 +478,17 @@
         }
 
         function descargarDocumento(titulo, url) {
-            // Aquí el desarrollador debe implementar la lógica de descarga real
-            alert(`Descargando: ${titulo}\n\nNota: El desarrollador debe configurar la URL real del documento.`);
-            // Para descarga real:
-            // window.open(url, '_blank');
+            if (url && url !== '#' && url !== '') {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = titulo;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                alert(`Error: No se ha configurado la URL para "${titulo}"`);
+            }
         }
 
         function buscarDocumentos() {

@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,19 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Álgebra Booleana</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #a6189d 100%);
+            background: linear-gradient(135deg, #000 0%, #a6189d 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -29,40 +22,18 @@
             overflow: hidden;
             animation: fadeIn 0.5s;
         }
-
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .header {
             background: linear-gradient(135deg, #a6189d 0%, #a6189d 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .input-section {
-            padding: 30px;
-            background: #f8f9fa;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .input-section { padding: 30px; background: #f8f9fa; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
         input[type="text"] {
             width: 100%;
             padding: 15px;
@@ -71,12 +42,7 @@
             font-size: 1.1em;
             transition: border-color 0.3s;
         }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #a6189d;
-        }
-
+        input[type="text"]:focus { outline: none; border-color: #a6189d; }
         .calculate-btn {
             width: 100%;
             padding: 15px;
@@ -89,45 +55,18 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
-        .calculate-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .results {
-            padding: 30px;
-            display: none;
-        }
-
-        .results.show {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .calculate-btn:hover { transform: translateY(-2px); }
+        .results { padding: 30px; display: none; }
+        .results.show { display: block; animation: fadeIn 0.5s; }
         .result-section {
             margin-bottom: 30px;
-            background: #ffffff;
+            background: #fff;
             padding: 20px;
             border-radius: 8px;
             border-left: 4px solid #a6189d;
         }
-
-        .result-section h2 {
-            color: #a6189d;
-            margin-bottom: 15px;
-        }
-
-        .variables {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
+        .result-section h2 { color: #a6189d; margin-bottom: 15px; }
+        .variables { display: flex; flex-wrap: wrap; gap: 10px; }
         .variable-badge {
             background: #a6189d;
             color: white;
@@ -135,7 +74,6 @@
             border-radius: 20px;
             font-weight: 600;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -144,51 +82,18 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background: #a6189d;
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background: #ffffff;
-        }
-
-        .karnaugh {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-        }
-
-        .karnaugh-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 1.05em;
-        }
-
-        .karnaugh-table th,
-        .karnaugh-table td {
+        th, td { padding: 12px; text-align: center; border: 1px solid #ddd; }
+        th { background: #a6189d; color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #fff; }
+        .karnaugh { background: white; padding: 20px; border-radius: 8px; overflow-x: auto; }
+        .karnaugh-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 1.05em; }
+        .karnaugh-table th, .karnaugh-table td {
             padding: 14px;
             text-align: center;
             border: 1px solid #ddd;
             min-width: 56px;
         }
-
-        .karnaugh-table th {
-            background: #a6189d;
-            color: white;
-            font-weight: 700;
-        }
-
+        .karnaugh-table th { background: #a6189d; color: white; font-weight: 700; }
         .karnaugh-table caption {
             caption-side: top;
             text-align: left;
@@ -196,12 +101,7 @@
             margin-bottom: 8px;
             color: #a6189d;
         }
-
-        .karnaugh-table td {
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
+        .karnaugh-table td { font-weight: 700; font-size: 1.1em; }
         .simplified {
             background: white;
             padding: 20px;
@@ -210,36 +110,24 @@
             font-weight: 600;
             color: #333;
         }
-
         .error {
-            background: #ff4444;
+            background: #f44;
             color: white;
             padding: 15px;
             border-radius: 8px;
             margin-top: 15px;
             display: none;
         }
-
-        .error.show {
-            display: block;
-        }
-
+        .error.show { display: block; }
         .info-box {
-            background: #ffffff;
+            background: #fff;
             padding: 15px;
             border-radius: 8px;
             margin-top: 10px;
             border-left: 4px solid #a6189d;
         }
-
-        .info-box ul {
-            margin-left: 20px;
-            margin-top: 10px;
-        }
-
-        .info-box li {
-            margin-bottom: 5px;
-        }
+        .info-box ul { margin-left: 20px; margin-top: 10px; }
+        .info-box li { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -248,375 +136,276 @@
             <h1>Calculadora de Álgebra Booleana</h1>
             <p>Analiza expresiones booleanas con hasta 5 variables</p>
         </div>
-
         <div class="input-section">
             <div class="input-group">
                 <label for="expression">Expresión Booleana:</label>
                 <input type="text" id="expression" placeholder="Ejemplo: (A y B) v ~C">
-                
                 <div class="info-box">
                     <strong>Operadores disponibles:</strong>
                     <ul>
-                        <li><strong>y</strong> o <strong>&</strong> : AND (conjunción)</li>
-                        <li><strong>v</strong> o <strong>|</strong> : OR (disyunción)</li>
+                        <li><strong>y</strong> : AND (conjunción)</li>
+                        <li><strong>v</strong> : OR (disyunción)</li>
                         <li><strong>~</strong> : NOT (negación)</li>
                         <li><strong>--></strong> : Condicional (implicación)</li>
                         <li><strong><--></strong> : Bicondicional (equivalencia)</li>
                     </ul>
                 </div>
             </div>
-
             <button class="calculate-btn" onclick="calcular()">Calcular</button>
-            
             <div class="error" id="error"></div>
         </div>
-
         <div class="results" id="results">
             <div class="result-section">
                 <h2>1. Variables Identificadas</h2>
                 <div class="variables" id="variables"></div>
             </div>
-
             <div class="result-section">
                 <h2>2. Tabla de Verdad</h2>
                 <div id="tabla-verdad"></div>
             </div>
-
             <div class="result-section">
                 <h2>3. Mapa de Karnaugh</h2>
                 <div class="karnaugh" id="karnaugh"></div>
             </div>
-
             <div class="result-section">
-                <h2>4. Expresión Desarrollada</h2>
+                <h2>4. Forma Normal Disyuntiva Mínima</h2>
                 <div class="simplified" id="simplified"></div>
             </div>
         </div>
     </div>
-
     <script>
         class CalculadoraBooleana {
-            constructor(expresion) {
-                this.expresionOriginal = expresion;
-                this.variables = this.identificarVariables(expresion);
-                this.nVars = this.variables.length;
+            constructor(expr) {
+                this.expr = expr;
+                this.vars = this.getVars(expr);
+                this.n = this.vars.length;
             }
-
-            identificarVariables(expr) {
-                const variables = new Set();
-                for (let i = 0; i < expr.length; i++) {
-                    const char = expr[i];
-                    if (/[A-Za-z]/.test(char) && char !== 'y' && char !== 'v') {
-                        variables.add(char);
+            getVars(e) {
+                const v = new Set();
+                for (let c of e) if (/[A-Za-z]/.test(c) && c !== 'y' && c !== 'v') v.add(c);
+                return Array.from(v).sort();
+            }
+            replaceVars(e, vals) {
+                let r = "";
+                for (let c of e) r += this.vars.includes(c) ? (vals[c] ? "true" : "false") : c;
+                return r;
+            }
+            eval(vals) {
+                let e = this.expr.replace(/\s/g, '');
+                e = this.replaceVars(e, vals);
+                while (e.includes('~true') || e.includes('~false')) {
+                    e = e.replace(/~true/g, 'false').replace(/~false/g, 'true');
+                }
+                e = e.replace(/y/g, ' && ').replace(/v/g, ' || ');
+                const evalOp = (op, len) => {
+                    const rx = new RegExp(`(true|false)\\s*${op}\\s*(true|false)`);
+                    while (e.includes(op)) {
+                        const m = e.match(rx);
+                        if (!m) break;
+                        const a = m[1] === 'true', b = m[2] === 'true';
+                        const res = len === 3 ? (!a || b) : (a === b);
+                        e = e.replace(m[0], res.toString());
                     }
-                }
-                return Array.from(variables).sort();
+                };
+                evalOp('-->', 3);
+                evalOp('<-->', 4);
+                try { return eval(e); } catch { return false; }
             }
-
-            reemplazarVariables(expr, valores) {
-                let resultado = "";
-                for (let i = 0; i < expr.length; i++) {
-                    const char = expr[i];
-                    if (this.variables.includes(char)) {
-                        resultado += valores[char] ? "true" : "false";
-                    } else {
-                        resultado += char;
-                    }
+            genTable() {
+                const combs = this.genCombs();
+                const res = [], table = [];
+                for (let c of combs) {
+                    const vals = {};
+                    this.vars.forEach((v, i) => vals[v] = c[i]);
+                    const r = this.eval(vals);
+                    table.push([...c, r]);
+                    res.push(r);
                 }
-                return resultado;
+                return { table, res };
             }
-
-            evaluar(valores) {
-                let expr = this.expresionOriginal.replace(/\s/g, '');
-                
-                expr = this.reemplazarVariables(expr, valores);
-                
-                while (expr.includes('~true') || expr.includes('~false')) {
-                    expr = expr.replace(/~true/g, 'false');
-                    expr = expr.replace(/~false/g, 'true');
+            genCombs() {
+                const combs = [];
+                for (let i = 0; i < 2 ** this.n; i++) {
+                    const c = [];
+                    for (let j = this.n - 1; j >= 0; j--) c.push((i & (1 << j)) !== 0);
+                    combs.push(c);
                 }
-                
-                expr = expr.replace(/y/g, ' && ');
-                expr = expr.replace(/v/g, ' || ');
-                
-                while (expr.includes('-->')) {
-                    const match = expr.match(/(true|false)\s*-->\s*(true|false)/);
-                    if (match) {
-                        const a = match[1] === 'true';
-                        const b = match[2] === 'true';
-                        const resultado = !a || b;
-                        expr = expr.replace(match[0], resultado.toString());
-                    } else {
-                        const match2 = expr.match(/\((true|false)\)\s*-->\s*\((true|false)\)/);
-                        if (match2) {
-                            const a = match2[1] === 'true';
-                            const b = match2[2] === 'true';
-                            const resultado = !a || b;
-                            expr = expr.replace(match2[0], resultado.toString());
-                        } else {
-                            break;
-                        }
-                    }
-                }
-                
-                while (expr.includes('<-->')) {
-                    const match = expr.match(/(true|false)\s*<-->\s*(true|false)/);
-                    if (match) {
-                        const a = match[1] === 'true';
-                        const b = match[2] === 'true';
-                        const resultado = a === b;
-                        expr = expr.replace(match[0], resultado.toString());
-                    } else {
-                        const match2 = expr.match(/\((true|false)\)\s*<-->\s*\((true|false)\)/);
-                        if (match2) {
-                            const a = match2[1] === 'true';
-                            const b = match2[2] === 'true';
-                            const resultado = a === b;
-                            expr = expr.replace(match2[0], resultado.toString());
-                        } else {
-                            break;
-                        }
-                    }
-                }
-                
-                try {
-                    return eval(expr);
-                } catch (e) {
-                    console.error("Error evaluando:", expr, e);
-                    return false;
-                }
+                return combs;
             }
-
-            generarTablaVerdad() {
-                const combinaciones = this.generarCombinaciones();
-                const resultados = [];
-                const tabla = [];
-
-                for (const comb of combinaciones) {
-                    const valores = {};
-                    this.variables.forEach((v, i) => {
-                        valores[v] = comb[i];
-                    });
-                    const resultado = this.evaluar(valores);
-                    tabla.push([...comb, resultado]);
-                    resultados.push(resultado);
-                }
-
-                return { tabla, resultados };
-            }
-
-            generarCombinaciones() {
-                const n = this.nVars;
-                const total = Math.pow(2, n);
-                const combinaciones = [];
-
-                for (let i = 0; i < total; i++) {
-                    const comb = [];
-                    for (let j = n - 1; j >= 0; j--) {
-                        comb.push((i & (1 << j)) !== 0);
-                    }
-                    combinaciones.push(comb);
-                }
-
-                return combinaciones;
-            }
-
-            generarMapaKarnaugh(resultados) {
-                if (this.nVars === 2) return this.karnaugh2var(resultados);
-                if (this.nVars === 3) return this.karnaugh3var(resultados);
-                if (this.nVars === 4) return this.karnaugh4var(resultados);
-                if (this.nVars === 5) return this.karnaugh5var(resultados);
+            genKarnaugh(res) {
+                if (this.n === 2) return this.k2(res);
+                if (this.n === 3) return this.k3(res);
+                if (this.n === 4) return this.k4(res);
+                if (this.n === 5) return this.k5(res);
                 return "<div>Mapa de Karnaugh disponible solo para 2-5 variables</div>";
             }
-
-            karnaugh2var(res) {
-                const [v1, v2] = this.variables;
-                return `
-<table class="karnaugh-table" aria-label="Mapa de Karnaugh 2 variables">
-  <caption>Mapa de Karnaugh (2 variables)</caption>
-  <thead>
-    <tr><th></th><th>${v2}=0</th><th>${v2}=1</th></tr>
-  </thead>
-  <tbody>
-    <tr><th>${v1}=0</th><td>${+res[0]}</td><td>${+res[1]}</td></tr>
-    <tr><th>${v1}=1</th><td>${+res[2]}</td><td>${+res[3]}</td></tr>
-  </tbody>
-</table>`;
+            k2(r) {
+                const [v1, v2] = this.vars;
+                return `<table class="karnaugh-table"><caption>Mapa de Karnaugh (2 variables)</caption>
+<thead><tr><th></th><th>${v2}=0</th><th>${v2}=1</th></tr></thead>
+<tbody><tr><th>${v1}=0</th><td>${+r[0]}</td><td>${+r[1]}</td></tr>
+<tr><th>${v1}=1</th><td>${+r[2]}</td><td>${+r[3]}</td></tr></tbody></table>`;
             }
-
-            karnaugh3var(res) {
-                const [v1, v2, v3] = this.variables;
-                const indices = [0, 1, 3, 2, 4, 5, 7, 6];
-                const valores = indices.map(i => res[i]);
-                return `
-<table class="karnaugh-table" aria-label="Mapa de Karnaugh 3 variables">
-  <caption>Mapa de Karnaugh (3 variables)</caption>
-  <thead>
-    <tr><th></th><th>${v2}${v3}=00</th><th>${v2}${v3}=01</th><th>${v2}${v3}=11</th><th>${v2}${v3}=10</th></tr>
-  </thead>
-  <tbody>
-    <tr><th>${v1}=0</th><td>${+valores[0]}</td><td>${+valores[1]}</td><td>${+valores[2]}</td><td>${+valores[3]}</td></tr>
-    <tr><th>${v1}=1</th><td>${+valores[4]}</td><td>${+valores[5]}</td><td>${+valores[6]}</td><td>${+valores[7]}</td></tr>
-  </tbody>
-</table>`;
+            k3(r) {
+                const [v1, v2, v3] = this.vars;
+                const idx = [0, 1, 3, 2, 4, 5, 7, 6];
+                const val = idx.map(i => r[i]);
+                return `<table class="karnaugh-table"><caption>Mapa de Karnaugh (3 variables)</caption>
+<thead><tr><th></th><th>${v2}${v3}=00</th><th>${v2}${v3}=01</th><th>${v2}${v3}=11</th><th>${v2}${v3}=10</th></tr></thead>
+<tbody><tr><th>${v1}=0</th><td>${+val[0]}</td><td>${+val[1]}</td><td>${+val[2]}</td><td>${+val[3]}</td></tr>
+<tr><th>${v1}=1</th><td>${+val[4]}</td><td>${+val[5]}</td><td>${+val[6]}</td><td>${+val[7]}</td></tr></tbody></table>`;
             }
-
-            karnaugh4var(res) {
-                const [v1, v2, v3, v4] = this.variables;
-                const indices = [0, 1, 3, 2, 4, 5, 7, 6, 12, 13, 15, 14, 8, 9, 11, 10];
-                const valores = indices.map(i => res[i]);
-                return `
-<table class="karnaugh-table" aria-label="Mapa de Karnaugh 4 variables">
-  <caption>Mapa de Karnaugh (4 variables)</caption>
-  <thead>
-    <tr><th>${v1}${v2}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr>
-  </thead>
-  <tbody>
-    <tr><th>00</th><td>${+valores[0]}</td><td>${+valores[1]}</td><td>${+valores[2]}</td><td>${+valores[3]}</td></tr>
-    <tr><th>01</th><td>${+valores[4]}</td><td>${+valores[5]}</td><td>${+valores[6]}</td><td>${+valores[7]}</td></tr>
-    <tr><th>11</th><td>${+valores[8]}</td><td>${+valores[9]}</td><td>${+valores[10]}</td><td>${+valores[11]}</td></tr>
-    <tr><th>10</th><td>${+valores[12]}</td><td>${+valores[13]}</td><td>${+valores[14]}</td><td>${+valores[15]}</td></tr>
-  </tbody>
-</table>`;
+            k4(r) {
+                const [v1, v2, v3, v4] = this.vars;
+                const idx = [0, 1, 3, 2, 4, 5, 7, 6, 12, 13, 15, 14, 8, 9, 11, 10];
+                const val = idx.map(i => r[i]);
+                return `<table class="karnaugh-table"><caption>Mapa de Karnaugh (4 variables)</caption>
+<thead><tr><th>${v1}${v2}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr></thead>
+<tbody><tr><th>00</th><td>${+val[0]}</td><td>${+val[1]}</td><td>${+val[2]}</td><td>${+val[3]}</td></tr>
+<tr><th>01</th><td>${+val[4]}</td><td>${+val[5]}</td><td>${+val[6]}</td><td>${+val[7]}</td></tr>
+<tr><th>11</th><td>${+val[8]}</td><td>${+val[9]}</td><td>${+val[10]}</td><td>${+val[11]}</td></tr>
+<tr><th>10</th><td>${+val[12]}</td><td>${+val[13]}</td><td>${+val[14]}</td><td>${+val[15]}</td></tr></tbody></table>`;
             }
-
-            karnaugh5var(res) {
-                const [v1, v2, v3, v4, v5] = this.variables;
-                const indices0 = [0, 1, 3, 2, 4, 5, 7, 6, 12, 13, 15, 14, 8, 9, 11, 10];
-                const indices1 = [16, 17, 19, 18, 20, 21, 23, 22, 28, 29, 31, 30, 24, 25, 27, 26];
-                const valores0 = indices0.map(i => res[i]);
-                const valores1 = indices1.map(i => res[i]);
-                
-                return `
-<div>
-  <table class="karnaugh-table" aria-label="Mapa de Karnaugh 5 variables - ${v1}=0">
-    <caption>Mapa de Karnaugh (5 variables) — ${v1}=0</caption>
-    <thead>
-      <tr><th>${v2}${v5}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr>
-    </thead>
-    <tbody>
-      <tr><th>00</th><td>${+valores0[0]}</td><td>${+valores0[1]}</td><td>${+valores0[2]}</td><td>${+valores0[3]}</td></tr>
-      <tr><th>01</th><td>${+valores0[4]}</td><td>${+valores0[5]}</td><td>${+valores0[6]}</td><td>${+valores0[7]}</td></tr>
-      <tr><th>11</th><td>${+valores0[8]}</td><td>${+valores0[9]}</td><td>${+valores0[10]}</td><td>${+valores0[11]}</td></tr>
-      <tr><th>10</th><td>${+valores0[12]}</td><td>${+valores0[13]}</td><td>${+valores0[14]}</td><td>${+valores0[15]}</td></tr>
-    </tbody>
-  </table>
-
-  <table class="karnaugh-table" aria-label="Mapa de Karnaugh 5 variables - ${v1}=1" style="margin-top:16px;">
-    <caption>Mapa de Karnaugh (5 variables) — ${v1}=1</caption>
-    <thead>
-      <tr><th>${v2}${v5}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr>
-    </thead>
-    <tbody>
-      <tr><th>00</th><td>${+valores1[0]}</td><td>${+valores1[1]}</td><td>${+valores1[2]}</td><td>${+valores1[3]}</td></tr>
-      <tr><th>01</th><td>${+valores1[4]}</td><td>${+valores1[5]}</td><td>${+valores1[6]}</td><td>${+valores1[7]}</td></tr>
-      <tr><th>11</th><td>${+valores1[8]}</td><td>${+valores1[9]}</td><td>${+valores1[10]}</td><td>${+valores1[11]}</td></tr>
-      <tr><th>10</th><td>${+valores1[12]}</td><td>${+valores1[13]}</td><td>${+valores1[14]}</td><td>${+valores1[15]}</td></tr>
-    </tbody>
-  </table>
-</div>`;
+            k5(r) {
+                const [v1, v2, v3, v4, v5] = this.vars;
+                const idx0 = [0, 1, 3, 2, 4, 5, 7, 6, 12, 13, 15, 14, 8, 9, 11, 10];
+                const idx1 = [16, 17, 19, 18, 20, 21, 23, 22, 28, 29, 31, 30, 24, 25, 27, 26];
+                const val0 = idx0.map(i => r[i]), val1 = idx1.map(i => r[i]);
+                const mkTable = (vals, title) => `<table class="karnaugh-table"><caption>${title}</caption>
+<thead><tr><th>${v2}${v5}</th><th>${v3}${v4}=00</th><th>${v3}${v4}=01</th><th>${v3}${v4}=11</th><th>${v3}${v4}=10</th></tr></thead>
+<tbody><tr><th>00</th><td>${+vals[0]}</td><td>${+vals[1]}</td><td>${+vals[2]}</td><td>${+vals[3]}</td></tr>
+<tr><th>01</th><td>${+vals[4]}</td><td>${+vals[5]}</td><td>${+vals[6]}</td><td>${+vals[7]}</td></tr>
+<tr><th>11</th><td>${+vals[8]}</td><td>${+vals[9]}</td><td>${+vals[10]}</td><td>${+vals[11]}</td></tr>
+<tr><th>10</th><td>${+vals[12]}</td><td>${+vals[13]}</td><td>${+vals[14]}</td><td>${+vals[15]}</td></tr></tbody></table>`;
+                return `<div>${mkTable(val0, `Mapa de Karnaugh (5 variables) — ${v1}=0`)}${mkTable(val1, `Mapa de Karnaugh (5 variables) — ${v1}=1`)}</div>`;
             }
-
-            simplificar(resultados) {
-                const minterms = resultados.map((r, i) => r ? i : -1).filter(i => i >= 0);
-                
-                if (minterms.length === 0) return "0";
-                if (minterms.length === Math.pow(2, this.nVars)) return "1";
-                
-                const terminos = minterms.map(m => {
-                    const binario = m.toString(2).padStart(this.nVars, '0');
-                    const termino = binario.split('').map((bit, i) => {
-                        return bit === '1' ? this.variables[i] : `~${this.variables[i]}`;
-                    });
-                    return `(${termino.join(' y ')})`;
-                });
-                
-                if (terminos.length <= 6) {
-                    return terminos.join(' v ');
-                } else {
-                    return `${terminos[0]} v ... v ${terminos[terminos.length - 1]} [${terminos.length} términos]`;
+            simplify(res) {
+                const mt = res.map((r, i) => r ? i : -1).filter(i => i >= 0);
+                if (mt.length === 0) return "0";
+                if (mt.length === 2 ** this.n) return "1";
+                const imp = this.getPrimes(mt);
+                if (imp.length > 8) return this.basicSimp(mt);
+                return this.buildExpr(imp);
+            }
+            getPrimes(mt) {
+                let grps = {};
+                for (let m of mt) {
+                    const bin = m.toString(2).padStart(this.n, '0');
+                    const ones = bin.split('').filter(b => b === '1').length;
+                    if (!grps[ones]) grps[ones] = [];
+                    grps[ones].push({ bin, used: false });
                 }
+                let primes = [];
+                while (true) {
+                    let newGrps = {}, found = false;
+                    const keys = Object.keys(grps).map(Number).sort((a, b) => a - b);
+                    for (let i = 0; i < keys.length - 1; i++) {
+                        const k1 = keys[i], k2 = keys[i + 1];
+                        if (!grps[k1] || !grps[k2]) continue;
+                        for (let t1 of grps[k1]) {
+                            for (let t2 of grps[k2]) {
+                                if (this.diff(t1.bin, t2.bin) === 1) {
+                                    found = true;
+                                    t1.used = t2.used = true;
+                                    const comb = this.combine(t1.bin, t2.bin);
+                                    const ones = comb.split('').filter(b => b === '1').length;
+                                    if (!newGrps[ones]) newGrps[ones] = [];
+                                    if (!newGrps[ones].some(g => g.bin === comb)) {
+                                        newGrps[ones].push({ bin: comb, used: false });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for (let key in grps) {
+                        for (let t of grps[key]) {
+                            if (!t.used && !primes.includes(t.bin)) primes.push(t.bin);
+                        }
+                    }
+                    if (!found) break;
+                    grps = newGrps;
+                }
+                return primes;
+            }
+            diff(b1, b2) {
+                let d = 0;
+                for (let i = 0; i < b1.length; i++) if (b1[i] !== b2[i]) d++;
+                return d;
+            }
+            combine(b1, b2) {
+                let r = '';
+                for (let i = 0; i < b1.length; i++) r += b1[i] === b2[i] ? b1[i] : '-';
+                return r;
+            }
+            buildExpr(imps) {
+                if (imps.length === 0) return "0";
+                if (imps.length === 1 && imps[0] === '-'.repeat(this.n)) return "1";
+                const terms = imps.map(imp => {
+                    const lits = [];
+                    for (let i = 0; i < imp.length; i++) {
+                        if (imp[i] === '1') lits.push(this.vars[i]);
+                        else if (imp[i] === '0') lits.push(`~${this.vars[i]}`);
+                    }
+                    if (lits.length === 0) return "1";
+                    if (lits.length === 1) return lits[0];
+                    return `(${lits.join(' y ')})`;
+                });
+                return terms.length === 1 ? terms[0] : terms.join(' v ');
+            }
+            basicSimp(mt) {
+                const terms = mt.slice(0, 6).map(m => {
+                    const bin = m.toString(2).padStart(this.n, '0');
+                    const term = bin.split('').map((b, i) => b === '1' ? this.vars[i] : `~${this.vars[i]}`);
+                    return `(${term.join(' y ')})`;
+                });
+                return mt.length <= 6 ? terms.join(' v ') : `${terms.join(' v ')} v ... [${mt.length} términos]`;
             }
         }
-
         function calcular() {
-            const expresion = document.getElementById('expression').value.trim();
-            const errorDiv = document.getElementById('error');
-            const resultsDiv = document.getElementById('results');
-
-            errorDiv.classList.remove('show');
-            resultsDiv.classList.remove('show');
-
-            if (!expresion) {
-                errorDiv.textContent = 'Por favor, ingresa una expresión booleana.';
-                errorDiv.classList.add('show');
+            const expr = document.getElementById('expression').value.trim();
+            const err = document.getElementById('error');
+            const res = document.getElementById('results');
+            err.classList.remove('show');
+            res.classList.remove('show');
+            if (!expr) {
+                err.textContent = 'Por favor, ingresa una expresión booleana.';
+                err.classList.add('show');
                 return;
             }
-
             try {
-                const calc = new CalculadoraBooleana(expresion);
-
-                if (calc.nVars === 0) {
-                    errorDiv.textContent = 'No se encontraron variables en la expresión.';
-                    errorDiv.classList.add('show');
+                const calc = new CalculadoraBooleana(expr);
+                if (calc.n === 0) {
+                    err.textContent = 'No se encontraron variables en la expresión.';
+                    err.classList.add('show');
                     return;
                 }
-
-                if (calc.nVars > 5) {
-                    errorDiv.textContent = 'La calculadora soporta hasta 5 variables.';
-                    errorDiv.classList.add('show');
+                if (calc.n > 5) {
+                    err.textContent = 'La calculadora soporta hasta 5 variables.';
+                    err.classList.add('show');
                     return;
                 }
-
-                // Variables
-                const variablesDiv = document.getElementById('variables');
-                variablesDiv.innerHTML = calc.variables.map(v => 
-                    `<span class="variable-badge">${v}</span>`
-                ).join('');
-
-                // Tabla de verdad
-                const { tabla, resultados } = calc.generarTablaVerdad();
-                const tablaDiv = document.getElementById('tabla-verdad');
-                
-                let tablaHTML = '<table><thead><tr>';
-                calc.variables.forEach(v => {
-                    tablaHTML += `<th>${v}</th>`;
+                document.getElementById('variables').innerHTML = calc.vars.map(v => `<span class="variable-badge">${v}</span>`).join('');
+                const { table, res: resultados } = calc.genTable();
+                let html = '<table><thead><tr>';
+                calc.vars.forEach(v => html += `<th>${v}</th>`);
+                html += '<th>Resultado</th></tr></thead><tbody>';
+                table.forEach(row => {
+                    html += '<tr>';
+                    row.forEach(val => html += `<td>${val ? 1 : 0}</td>`);
+                    html += '</tr>';
                 });
-                tablaHTML += '<th>Resultado</th></tr></thead><tbody>';
-
-                tabla.forEach(fila => {
-                    tablaHTML += '<tr>';
-                    fila.forEach(val => {
-                        tablaHTML += `<td>${val ? 1 : 0}</td>`;
-                    });
-                    tablaHTML += '</tr>';
-                });
-
-                tablaHTML += '</tbody></table>';
-                tablaDiv.innerHTML = tablaHTML;
-
-                // Mapa de Karnaugh
-                const karnaughDiv = document.getElementById('karnaugh');
-                karnaughDiv.innerHTML = calc.generarMapaKarnaugh(resultados);
-
-                // Expresión simplificada
-                const simplifiedDiv = document.getElementById('simplified');
-                simplifiedDiv.textContent = calc.simplificar(resultados);
-
-                resultsDiv.classList.add('show');
-
+                html += '</tbody></table>';
+                document.getElementById('tabla-verdad').innerHTML = html;
+                document.getElementById('karnaugh').innerHTML = calc.genKarnaugh(resultados);
+                document.getElementById('simplified').textContent = calc.simplify(resultados);
+                res.classList.add('show');
             } catch (e) {
-                errorDiv.textContent = `Error: ${e.message}. Verifica que la expresión esté correctamente escrita.`;
-                errorDiv.classList.add('show');
-                console.error(e);
+                err.textContent = `Error: ${e.message}. Verifica que la expresión esté correctamente escrita.`;
+                err.classList.add('show');
             }
         }
-
-        // Permitir calcular con Enter
-        document.getElementById('expression').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calcular();
-            }
+        document.getElementById('expression').addEventListener('keypress', e => {
+            if (e.key === 'Enter') calcular();
         });
     </script>
 </body>
