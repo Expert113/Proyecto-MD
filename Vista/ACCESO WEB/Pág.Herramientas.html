@@ -7,10 +7,10 @@
     <title>Archivero de Documentos</title>
     <style>
         :root {
-            --bg1: #1a0000;
-            --bg2: #400000;
-            --bg3: #a00000;
-            --accent: #ffd86b;
+            --bg1: #303030;
+            --bg2: #303030;
+            --bg3: #303030;
+            --accent: #303030;
             --card-border: rgba(0,0,0,0.6);
             --radius: 12px;
             font-family: "Inter", system-ui, "Segoe UI", Roboto, Arial;
@@ -26,7 +26,7 @@
             height: 100%;
             margin: 0;
             background: radial-gradient(circle at center, var(--bg3) 0%, var(--bg2) 45%, var(--bg1) 100%);
-            color: #f2f2f2;
+            color: #000000;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -46,7 +46,7 @@
         }
 
         .back {
-            color: rgba(255,255,255,0.85);
+            color: #ffffffd9;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -66,23 +66,23 @@
         .search-box {
             width: 100%;
             padding: 12px 16px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(180deg, #ffffff, #ffffff);
+            border: 1px solid #000000;
             border-radius: 10px;
-            color: rgba(255,255,255,0.9);
+            color: #000000;
             font-size: 0.95rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .search-box::placeholder {
-            color: rgba(255,255,255,0.5);
+            color: rgb(0, 0, 0);
         }
 
         .search-box:focus {
-            border-color: rgba(255,255,255,0.25);
+            border-color: rgb(0, 0, 0);
             background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         header {
@@ -104,14 +104,15 @@
         header h1 {
             margin: 0;
             font-size: 2.6rem;
+            color: #a00000;
             letter-spacing: 0.6px;
-            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            text-shadow: 0 6px 20px #303030;
         }
 
         header p {
             margin: 12px 0 0;
             font-size: 1rem;
-            color: rgba(255,255,255,0.85);
+            color: rgba(0, 0, 0, 0.85);
             text-align: center;
         }
 
@@ -122,10 +123,10 @@
         }
 
         .topic {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+            background: linear-gradient(180deg, rgb(255, 255, 255), rgb(255, 255, 255));
             border-radius: var(--radius);
             padding: 12px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.45), 0 0 18px rgba(0,0,0,0.25) inset;
+            box-shadow: 0 6px 24px #ffffff73, 0 0 18px rgba(0,0,0,0.25) inset;
             border: 1px solid rgba(255,255,255,0.05);
             position: relative;
             overflow: hidden;
@@ -153,7 +154,7 @@
         }
 
         .topic-header:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgb(255, 255, 255);
         }
 
         .topic-header h3 {
@@ -213,14 +214,14 @@
 
         .document-item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 14px 46px rgba(0,0,0,0.6), 0 0 30px rgba(255,0,0,0.3);
+            box-shadow: 0 14px 46px rgba(0,0,0,0.6), 0 0 30px #ffffff;
             background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
         }
 
         .document-icon {
             font-size: 2.2em;
             margin-right: 18px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            filter: drop-shadow(0 4px 8px #ffffff);
         }
 
         .document-info {
@@ -231,18 +232,18 @@
             font-weight: 600;
             font-size: 1.05em;
             margin-bottom: 6px;
-            color: rgba(255,255,255,0.95);
+            color: #124da0;
         }
 
         .document-meta {
             font-size: 0.88em;
-            color: rgba(255,255,255,0.65);
+            color: #000000;
         }
 
         .download-btn {
-            background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.1));
+            background: linear-gradient(180deg, #124da0, #124da0);
             color: rgba(255,255,255,0.9);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid #000000;
             padding: 10px 18px;
             border-radius: 10px;
             cursor: pointer;
@@ -253,8 +254,8 @@
 
         .download-btn:hover {
             transform: translateY(-3px);
-            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
-            border-color: rgba(255,255,255,0.15);
+            background: linear-gradient(180deg, #a00000, #a00000);
+            border-color: #000000;
         }
 
         footer {
@@ -270,13 +271,13 @@
 
         .author {
             font-size: 0.95rem;
-            color: rgba(255,255,255,0.95);
+            color: rgba(0, 0, 0, 0.95);
             line-height: 1.1;
         }
 
         .author small {
             display: block;
-            color: rgba(255,255,255,0.6);
+            color: rgba(0, 0, 0, 0.6);
             font-size: 0.85rem;
         }
 
@@ -340,7 +341,7 @@
             <h1>HERRAMIENTAS DIGITALES</h1>
             <img src="https://static.vecteezy.com/system/resources/previews/017/444/146/original/batman-logo-free-png.png" alt="Logo" class="header-logo">
         </header>
-        <p style="text-align:center; margin-top:-20px; margin-bottom:32px; font-size:1rem; color:rgba(255,255,255,0.85);">Sistema de gestión y archivo</p>
+        <p style="text-align:center; margin-top:-20px; margin-bottom:32px; font-size:1rem; color:#ffffff;">Sistema de gestión y archivo</p>
 
         <section class="topics-section" id="topicsSection"></section>
 
@@ -450,7 +451,7 @@
                 topicDiv.innerHTML = `
                     <div class="topic-header" onclick="toggleTopic(${index})">
                         <h3>${tema}</h3>
-                        <span class="topic-icon">▼</span>
+                        <span class="topic-icon">-</span>
                     </div>
                     <div class="documents-list">
                         ${documentos.map(doc => `

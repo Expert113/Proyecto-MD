@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo - Login User</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sección Izquierda - 5/8 - Animación Interactiva */
+        .animation-section {
+            width: 62.5%;
+            background: linear-gradient(135deg, #000000 0%, #a00000 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.242) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(157, 159, 168, 0.312) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.4;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        .canvas-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .animation-section{
+            display: flex;
+        }
+        .animation-section .Eyes {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: block;
+            background: radial-gradient(circle at center, #ffffff, #cccccc);
+            margin: 0 20px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 5px 45px #ffffff80; inset: 0 0 20px #a7812e; inset: 0 0px 25px #00000080;
+        }
+        .Eyes::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at center, #000000, #333333);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px #00000080;
+        }
+
+        /* Sección Derecha - 3/8 - Información */
+        .info-section {
+            width: 37.5%;
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 50px 40px;
+            overflow-y: auto;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .mod-title {
+            font-size: 72px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a00000, #a00000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: -2px;
+        }
+        .mod-title {
+            font-family:"Sans-serif"
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #5e656c;
+            font-weight: 500;
+        }
+
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #a00000, transparent);
+            margin: 30px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border-left-color: #a00000;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #3d3e3f;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: left;
+            gap: 12px;
+        }
+        .enlace-item {
+            display: flex;
+            gap: 15px;     
+        }
+
+        .google {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .microsoft {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .meta {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        } 
+
+        .card-content {
+            color: #ffffff;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+            border: 2px solid #ffffff;
+            border-left: 6px solid #ffffff;
+        }
+        .formulario {
+            margin-top: 20px;
+        }
+        .formulario .Username {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .Password input:focus ~ label,
+        .Password input:valid ~ label {
+            top: -20px;
+            left: 0;
+            color: #a00000;
+            font-size: 12px;
+        }
+        .formulario input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #333;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            background: transparent;
+            outline: none;
+        }
+        .formulario label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            color: #999;
+            font-size: 16px;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+        .formulario input:focus ~ label,
+        .formulario input:valid ~ label {
+            top: -20px;
+            left: 0;
+            color: #a00000;
+            font-size: 12px;
+        }
+        .boton {
+            text-align: center;
+        }
+        .boton button {
+            padding: 10px 20px;
+            font-size: 20px;
+            color: #fff;
+            background: #a00000;
+            border: 15px solid #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .boton button:hover {
+            background: #124da0;
+        }
+        @keyframes gridMove {
+            0% {
+                background-position: 0 0, 0 0;
+            }
+            100% {
+                background-position: 0 400px, 400px 0;
+            }
+        }
+        .registro {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .registro p {
+            font-size: 14px;
+            color: #555;
+        }
+        .registro a {
+            color: #a00000;
+            text-decoration: none;
+        }
+        .institución {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .institución p {
+            font-size: 14px;
+            color: #555;
+        }
+        .institución a {
+            color: #124da0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sección Izquierda: 5/8 - Animación Interactiva -->
+        <div class="animation-section">
+            <div class="grid-background"></div>
+        </div> 
+
+        <!-- Sección Derecha: 3/8 - Información -->
+        <div class="info-section">
+            <div class="header">
+                <h1 class="mod-title">PixelIA</h1>
+                <p class="subtitle">Inicia sesión o registrate:</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="card highlight-card">
+                <div class="card-title">
+                    Iniciar sesión con:
+                    <div class="enlace-item">
+                        <a href="https://accounts.google.com/v3/signin/accountchooser?dsh=S1110312400%3A1761627723957644&elo=1&ifkv=ARESoU00cfiy1isSfc1mhTjBYCwbF-x28jtbYWlN-X56PmoS5XT6xQYKnmgxqAM0HeOUy82tCtln&flowName=GlifWebSignIn&flowEntry=ServiceLogin"><img src="https://th.bing.com/th/id/R.55d3560e93ba6e8e604f43b0a089c3c3?rik=ZsCpRaVUmCIpLQ&pid=ImgRaw&r=0" alt="Google" class="google"></a>
+                        <a href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?scope=service%3a%3aaccount.microsoft.com%3a%3aMBI_SSL+openid+profile+offline_access&response_type=code&client_id=81feaced-5ddd-41e7-8bef-3e20a2689bb7&redirect_uri=https%3a%2f%2faccount.microsoft.com%2fauth%2fcomplete-signin-oauth&client-request-id=5d62816f-ef02-4fe4-94e4-c9684b435964&x-client-SKU=MSAL.Desktop&x-client-Ver=4.66.1.0&x-client-OS=Windows+Server+2019+Datacenter&prompt=login&client_info=1&state=H4sIAAAAAAAEAAXB3RpCMAAA0HfptosxVC6jCRlWfrK7WKSPJkN4-s7ZYNNTXx1hERmGq5PXFCHFCnnxsV1EDIjkVdQi7q1wW5wlBFkjGMEPw_zx8iJ5-PuVDBkarTjFBAVDUr9JRWerHdC3G19D4wa_Vc1momY5C-ujd4UqimK9O833Re3t-cPnPacjrRZPQywBVsbwwc4LozaNt9kSPdJ6cAgeWwkh_SmDW-Ozoq8UgXGOHRdKHNJDa_GdKMHyih3ZxhTcLhJIgiDunr0_7idXWZu7eDP76Kod1Zkfk5J1UcphlXLhTa1F_SScmKEkWq45n1J2U9OJE_QD0D_L19AOHKtYh4nswjQYwyUDPvaWeWyT83bzB-WKD5hCAQAA&msaoauth2=true&instance_aware=true&lc=2058&sso_nonce=AwABEgEAAAADAOz_BQD0_2eUd9qOQoqCXTL75OP-ibCjZ7Trx5Rv2Zm_b-yu68jqFhHBAnHJYfych4BtMlhTpK-F93bh6sn1BforrXD4CkYgAA&mscrid=5d62816f-ef02-4fe4-94e4-c9684b435964"><img src="https://tse2.mm.bing.net/th/id/OIP.PWoq1WvDQDxc_MPv4Jt0GwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Microsoft" class="microsoft"></a>
+                        <a href="https://business.facebook.com/business/loginpage/?next=%2F&login_options%5B0%5D=FB&login_options%5B1%5D=IG&cma_account_switch=0"><img src="https://pngimg.com/uploads/meta/meta_PNG4.png" alt="Meta" class="meta"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="formulario">
+                    <form method="post">
+                        <div class="Username">
+                            <input type="text" required>
+                            <label>Username</label>
+                        </div>
+                        <div class="Password"></div>
+                            <input type="password" required>
+                            <label></label>
+                        <div>
+
+                        <div class="boton">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+                    <div class="registro">
+                        <p>¿No tienes una cuenta? <a href="http://127.0.0.1:5500/Vista/prueba.html#">Regístrate aquí</a></p>
+                </div>
+            <div>
+        </div>
+    </div>
+<div>
+    <div class="institución">
+        <p><a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Login%20Inst..html">Institución?</a></p>
+    </div>
+</div>
+</body>
+</html>

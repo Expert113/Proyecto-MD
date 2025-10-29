@@ -7,7 +7,7 @@
     <title>Aplicaciones - Proyecto MD</title>
     <style>
         :root{
-            --bg:#f5f7fb;
+            --bg:#303030;
             --card:#fff;
             --accent:#a00000;
             --muted:#6b7280;
@@ -16,7 +16,7 @@
         }
         body{ margin:0; background:var(--bg); color:#111; }
         header{
-            background:linear-gradient(90deg,var(--accent),#1e40af);
+            background:linear-gradient(90deg,var(--accent),#124da0);
             color:#fff;
             padding:18px 24px;
             display:flex;
@@ -28,6 +28,15 @@
         .container{ max-width:1100px; margin:20px auto; padding:16px; }
         .controls{ display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
         .search {
+            flex:1 1 320px;
+            display:flex;
+            align-items:center;
+            background:var(--card);
+            padding:8px 12px;
+            border-radius:8px;
+            box-shadow:var(--shadow);
+        }
+        .subjectFilter {
             flex:1 1 320px;
             display:flex;
             align-items:center;
@@ -89,7 +98,7 @@
         <div class="controls">
             <div class="search" role="search">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <input id="searchInput" type="search" placeholder="Buscar por nombre de aplicación..." aria-label="Buscar aplicaciones por nombre" />
+                <input id="searchInput" type="search" placeholder= "Buscar por nombre de aplicación..."  aria-label="Buscar aplicaciones por nombre" />
             </div>
             <select id="subjectFilter" aria-label="Filtrar por materia">
                 <option value="">Todas las materias</option>
@@ -111,21 +120,21 @@
         { 
             id:1, 
             name:"Calculadora Binaria", 
-            subject:"Matemática Discreta", 
+            subject:"Matemáticas Discretas", 
             desc:"Conversiones y operaciones binarias", 
             link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Binaria.html"
         },
         { 
             id:2, 
             name:"Calculadora Booleana", 
-            subject:"Matemática Discreta", 
+            subject:"Matemáticas Discretas", 
             desc:"Operaciones con algebra booleana", 
             link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Booleana.html"
         },
         { 
             id:3, 
             name:"Solución de Conjuntos", 
-            subject:"Matemática Discreta", 
+            subject:"Matemáticas Discretas", 
             desc:"Operaciones con conjuntos", 
             link:"http://127.0.0.1:5500/Vista/APLICACIONES/Soluci%C3%B3n%20de%20Conjuntos.html"
         }
