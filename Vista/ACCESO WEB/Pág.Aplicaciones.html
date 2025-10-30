@@ -7,14 +7,26 @@
     <title>Aplicaciones - Proyecto MD</title>
     <style>
         :root{
-            --bg:#303030;
-            --card:#fff;
+            --bg:#323232;
+            --card:#323232;
             --accent:#a00000;
             --muted:#6b7280;
-            --shadow: 0 1px 3px rgba(16,24,40,.08);
+            --shadow: 0 1px 3px #10182800;
             font-family: "Segoe UI", Roboto, Arial, sans-serif;
         }
-        body{ margin:0; background:var(--bg); color:#111; }
+
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(180deg,var(--bg), #050607);
+            color: #eaf7ef;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+    }
+
+        body{ margin:0; background:var(--bg); color:#ffffff; }
         header{
             background:linear-gradient(90deg,var(--accent),#124da0);
             color:#fff;
@@ -22,9 +34,10 @@
             display:flex;
             align-items:center;
             gap:16px;
-            box-shadow: 0 2px 6px rgba(2,6,23,.12);
+            box-shadow: 0 2px 6px #ffffff1f;
         }
-        header h1{ font-size:18px; margin:0; font-weight:600; }
+
+        header h1{ font-size:18px; margin:0; font-weight:600;}
         .container{ max-width:1100px; margin:20px auto; padding:16px; }
         .controls{ display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
         .search {
@@ -34,6 +47,7 @@
             background:var(--card);
             padding:8px 12px;
             border-radius:8px;
+            border-color: #ffffff;
             box-shadow:var(--shadow);
         }
         .subjectFilter {
@@ -41,41 +55,44 @@
             display:flex;
             align-items:center;
             background:var(--card);
-            padding:8px 12px;
+            padding:10px 20px;
             border-radius:8px;
             box-shadow:var(--shadow);
+            color: #000;;
         }
         .search input{
-            border:0; outline:none; font-size:15px; width:100%;
+            border:10; outline:none; font-size:15px; width:100%;
             background:transparent;
+            border-color: #000000;
+            border-radius: 15px;
         }
         .sections { display:grid; gap:18px; }
         .subject {
             background:var(--card);
-            border-radius:10px;
+            border-radius:50px;
             padding:14px;
             box-shadow:var(--shadow);
         }
         .subject h2 { margin:0 0 8px 0; font-size:16px; display:flex; justify-content:space-between; align-items:center; }
         .cards { display:flex; gap:12px; flex-wrap:wrap; }
         .app-card {
-            background:linear-gradient(180deg,#fff,#f9fbff);
+            background:linear-gradient(180deg,#323232,#323232);
             border-radius:8px;
             padding:10px;
             width:220px;
-            box-shadow:0 1px 4px rgba(16,24,40,.06);
+            box-shadow:0 1px 4px #000000;
             display:flex;
             gap:10px;
             align-items:center;
         }
         .app-thumb{
-            width:48px; height:48px; background:#eef2ff; border-radius:8px;
+            width:48px; height:48px; background:#124da0; border-radius:8px;
             display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--accent);
         }
         .app-info{ flex:1; }
-        .app-info h3{ margin:0; font-size:14px; }
-        .app-info p{ margin:4px 0 0; font-size:12px; color:var(--muted); }
-        .no-results{ color:var(--muted); padding:12px 0; font-size:14px; }
+        .app-info h3{ margin:0; font-size:14px; color:#ffffff}
+        .app-info p{ margin:4px 0 0; font-size:12px; color:#ffffff}
+        .no-results{ color:#ffffff; padding:12px 0; font-size:14px; }
         footer{ text-align:center; color:var(--muted); padding:24px 0; font-size:13px; }
         a.btn {
             background:rgba(255,255,255,.12);
@@ -90,15 +107,15 @@
 </head>
 <body>
     <header>
-        <a href="#" onclick="history.back(); return false;" class="btn" title="Volver">← Volver a inicio</a>
-        <h1>Aplicaciones</h1>
+        <a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/1-Center%20Web.html" return false; class="btn" title="Volver">← Volver a inicio</a>
+        <h1>Aplicaciones </h1>
     </header>
 
     <main class="container">
         <div class="controls">
             <div class="search" role="search">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <input id="searchInput" type="search" placeholder= "Buscar por nombre de aplicación..."  aria-label="Buscar aplicaciones por nombre" />
+                <input id="searchInput" type="search" placeholder= "   Buscar por nombre de aplicación..."  aria-label="Buscar aplicaciones por nombre" />
             </div>
             <select id="subjectFilter" aria-label="Filtrar por materia">
                 <option value="">Todas las materias</option>
@@ -150,6 +167,7 @@
                 (acc[app.subject] ??= []).push(app);
                 return acc;
             }, {});
+            
         }
 
         // Renderizar opciones de filtro de materia

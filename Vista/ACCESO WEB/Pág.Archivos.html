@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #323232 0%, #000000 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -26,7 +26,7 @@
 
         .header {
             text-align: center;
-            color: #870303;
+            color: #a00000;
             margin-bottom: 30px;
         }
 
@@ -39,11 +39,11 @@
             font-size: 16px;
             opacity: 0.9;
             text-align: center;
-            color: #000000;
+            color: #ffff;
         }
 
         .upload-area {
-            background: white;
+            background: #323232;
             border-radius: 10px;
             padding: 40px;
             text-align: center;
@@ -63,13 +63,13 @@
         }
 
         .upload-area h2 {
-            color: #333;
+            color: #ffffff;
             margin-bottom: 10px;
             font-size: 24px;
         }
 
         .upload-area p {
-            color: #666;
+            color: #ffffff;
             margin-bottom: 20px;
         }
 
@@ -102,14 +102,14 @@
         }
 
         .files-list {
-            background: white;
+            background: #323232;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .files-list h3 {
-            color: #333;
+            color: #ffffff;
             margin-bottom: 20px;
             font-size: 22px;
             border-bottom: 2px solid #000000;
@@ -149,13 +149,13 @@
 
         .file-name {
             font-weight: bold;
-            color: #333;
+            color: #000000;
             margin-bottom: 5px;
         }
 
         .file-size {
             font-size: 12px;
-            color: #666;
+            color: #323232;
         }
 
         .file-actions {
@@ -173,16 +173,16 @@
         }
 
         .btn-view {
-            background: #667eea;
+            background: #323232;
             color: white;
         }
 
         .btn-view:hover {
-            background: #5568d3;
+            background: #124da0;
         }
 
         .btn-download {
-            background: #28a745;
+            background: #323232;
             color: white;
         }
 
@@ -191,12 +191,12 @@
         }
 
         .btn-delete {
-            background: #dc3545;
+            background: #323232;
             color: white;
         }
 
         .btn-delete:hover {
-            background: #c82333;
+            background: #a00000;
         }
 
         .empty-state {
@@ -363,9 +363,9 @@
                         </div>
                     </div>
                     <div class="file-actions">
-                        <button class="btn btn-view" onclick="viewFile(${file.id})">👁️ Ver</button>
-                        <button class="btn btn-download" onclick="downloadFile(${file.id})">⬇️ Descargar</button>
-                        <button class="btn btn-delete" onclick="deleteFile(${file.id})">🗑️ Eliminar</button>
+                        <button class="btn btn-view" onclick="viewFile(${file.id})">Ver</button>
+                        <button class="btn btn-download" onclick="downloadFile(${file.id})">Descargar</button>
+                        <button class="btn btn-delete" onclick="deleteFile(${file.id})">Eliminar</button>
                     </div>
                 </div>
             `).join('');
@@ -403,15 +403,5 @@
         // Initial render
         renderFilesList();
     </script>
-
-    <!-- Pie de página -->
-<p>   </p>
-    <footer>
-      <div class="author">
-        <strong>Carlos colorado garcia</strong>
-        <small></small>
-      </div>
-    </footer>
-  </div>
 </body>
 </html>

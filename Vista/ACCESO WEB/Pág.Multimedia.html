@@ -7,12 +7,11 @@
   <title>Multimedia</title>
   <style>
     :root{
-      --bg1: #1a0000; /* negro rojizo oscuro */
-      --bg2: #400000; /* rojo oscuro profundo */
-      --bg3: #a00000; /* rojo brillante central */
+      --bg1: #000000; /* negro rojizo oscuro */
+      --bg2: #323232; /* rojo oscuro profundo */
       --accent: #ffd86b; /* dorado */
       --led: #00ffd1;
-      --card-border: rgba(0,0,0,0.6);
+      --card-border: #ff000099;
       --radius: 12px;
       font-family: "Inter", system-ui, "Segoe UI", Roboto, Arial;
     }
@@ -21,7 +20,7 @@
     html,body{
       height:100%;
       margin:0;
-      background: radial-gradient(circle at center, var(--bg3) 0%, var(--bg2) 45%, var(--bg1) 100%);
+      background: radial-gradient(var(--bg1) 0%, var(--bg2) 100%);
       color:#f2f2f2;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -52,15 +51,16 @@
       margin-bottom:22px;
     }
     header h1{
+      color: #124da0;
       margin:0;
       font-size:2.6rem;
       letter-spacing:0.6px;
-      text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      text-shadow: 0 6px 20px #000000;
     }
     header p{
       margin:12px 0 0;
       font-size:1rem;
-      color: rgba(255,255,255,0.85);
+      color: #ffffff;
     }
 
     /* Contenedor del video */
@@ -258,10 +258,10 @@
     <!-- Pie de página -->
     <footer>
       <div class="author">
-        <strong>jessica pola chama aguilar</strong>
-        <small>@starwars</small>
+        <strong>Empresa</strong>
+        <small>@Contacto</small>
       </div>
-      <a class="ig-link" href="https://www.instagram.com/starwars/" target="_blank" rel="noopener noreferrer">
+      <a class="ig-link" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="2" width="20" height="20" rx="5" fill="black" opacity="0.1"/>
           <path d="M7 2.5h10A4.5 4.5 0 0 1 21.5 7v10A4.5 4.5 0 0 1 17 21.5H7A4.5 4.5 0 0 1 2.5 17V7A4.5 4.5 0 0 1 7 2.5z" fill="none" stroke="white" stroke-opacity="0.9"/>
