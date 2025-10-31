@@ -1,528 +1,400 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archivero de Documentos</title>
+    <title>Archivos - Sistema de Gestión</title>
     <style>
-        :root {
-            --bg1: #000000;
-            --bg2: #323232;
-            --accent: #303030;
-            --card-border: rgba(0,0,0,0.6);
-            --radius: 12px;
-            font-family: "Inter", system-ui, "Segoe UI", Roboto, Arial;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            background: radial-gradient(var(--bg1) 0%, var(--bg2) 100%);
-            color: #000000;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #323232;
+            color: #333;
+        }
+
+        .header {
+            background-color: #000;
+            color: white;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .header h1 {
+            color: #a00000;
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #999;
+            font-weight: 400;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #000000;
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 28px auto;
-            padding: 28px;
-        }
-
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            gap: 20px;
-        }
-
-        .back {
-            color: #ffffffd9;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-        }
-        .back::before {
-            content: "←";
-            opacity: 0.9;
-        }
-
-        .search-container {
-            flex: 1;
-            max-width: 400px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
         .search-box {
-            width: 100%;
-            padding: 12px 16px;
-            background: linear-gradient(180deg, #ffffff, #ffffff);
-            border: 1px solid #000000;
-            border-radius: 10px;
-            color: #000000;
-            font-size: 0.7rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .search-box::placeholder {
-            color: rgb(0, 0, 0);
-        }
-
-        .search-box:focus {
-            border-color: rgb(0, 0, 0);
-            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 32px;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
+            gap: 1rem;
         }
 
-        .header-logo {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+        .search-box input {
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            width: 100%;
+            color: #666;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 36px;
-            color: #a00000;
-            letter-spacing: 0.6px;
-            text-shadow: 0 6px 20px #303030;
+        .search-box input::placeholder {
+            color: #999;
         }
 
-        header p {
-            margin: 12px 0 0;
-            font-size: 16px;
-            color: rgba(0, 0, 0, 0.85);
-            text-align: center;
-        }
-
-        .topics-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .topic {
-            background: linear-gradient(180deg, #323232, #323232);
-            border-radius: var(--radius);
-            padding: 12px;
-            box-shadow: 0 6px 24px #00000040 inset;
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
+        .category-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px #0000001a;
             overflow: hidden;
         }
 
-        .topic::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            pointer-events: none;
-            box-shadow: 0 0 20px 4px rgba(255,0,0,0.06), 0 0 6px 1px rgba(0,0,0,0.6) inset;
-        }
-
-        .topic-header {
-            padding: 10px;
-            cursor: pointer;
+        .category-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            position: relative;
-            z-index: 1;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            user-select: none;
         }
 
-        .topic-header:hover {
-            background: #323232;
+        .category-header:hover {
+            background-color: #f9f9f9;
         }
 
-        .topic-header h3 {
-            font-size: 1.4em;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .topic-icon {
-            font-size: 1.5em;
-            transition: transform 0.35s ease;
-            opacity: 0.8;
-        }
-
-        .topic.active .topic-icon {
-            transform: rotate(180deg);
-        }
-
-        .documents-list {
-            display: none;
-            padding: 16px 20px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .topic.active .documents-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .document-item {
+        .category-info {
             display: flex;
             align-items: center;
-            padding: 16px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 8px 22px rgba(0,0,0,0.5);
-            transition: all 0.35s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            gap: 1rem;
         }
 
-        .document-item::before {
-            content: "";
-            position: absolute;
-            bottom: 6px;
-            left: 10px;
-            right: 10px;
-            height: 4px;
-            border-radius: 6px;
-            background: linear-gradient(90deg, #ffffff, rgba(255,255,255,0.05));
-            box-shadow: 0 4px 14px rgba(0,0,0,0.6) inset;
-        }
-
-        .document-item:hover {
-            transform: translateY(-4px);
-            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0, 0, 0, 0.05));
-        }
-
-        .document-icon {
-            font-size: 2.2em;
-            margin-right: 18px;
-        }
-
-        .document-info {
-            flex: 1;
-        }
-
-        .document-title {
-            font-weight: 600;
-            font-size: 1.05em;
-            margin-bottom: 6px;
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
             color: #124da0;
         }
 
-        .document-meta {
-            font-size: 0.88em;
-            color: #ffffff;
-        }
-
-        .download-btn {
-            background: linear-gradient(180deg, #124da0, #124da0);
-            color: rgba(255,255,255,0.9);
-            border: 1px solid #000000;
-            padding: 10px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
+        .category-count {
+            background-color: #f1f5f9;
+            color: #64748b;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
-        .download-btn:hover {
-            transform: translateY(-3px);
-            background: linear-gradient(180deg, #a00000, #a00000);
-            border-color: #000000;
+        .category-toggle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            transition: transform 0.3s;
         }
 
-        footer {
-            margin-top: 32px;
-            padding: 18px;
+        .category-section.collapsed .category-toggle {
+            transform: rotate(0deg);
+        }
+
+        .category-section.expanded .category-toggle {
+            transform: rotate(180deg);
+        }
+
+        .files-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 2rem;
+        }
+
+        .category-section.expanded .files-container {
+            max-height: 1000px;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            padding-top: 1rem;
+        }
+
+        .file-card {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
             border-radius: 10px;
+            padding: 1.5rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(255,255,255,0.05));
-            border: 1px solid rgba(0,0,0,0.6);
+            gap: 1rem;
+            transition: all 0.2s;
         }
 
-        .author {
-            font-size: 0.95rem;
-            color: rgba(0, 0, 0, 0.95);
-            line-height: 1.1;
+        .file-card:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .author small {
-            display: block;
-            color: rgba(0, 0, 0, 0.6);
-            font-size: 0.85rem;
+        .file-icon {
+            font-size: 2.5rem;
+            color: #64748b;
         }
 
-        @media (max-width: 880px) {
-            .container {
-                padding: 20px;
-            }
+        .file-info {
+            flex: 1;
+        }
 
-            .top-nav {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
+        .file-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
 
-            .search-container {
-                width: 100%;
-                max-width: 100%;
-            }
+        .file-size {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
 
-            header {
-                flex-direction: column;
-                gap: 12px;
-            }
+        .download-button {
+            background: #124da0;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
 
-            header h1 {
+        .download-button:hover {
+            background: #a00000;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
                 font-size: 2rem;
             }
 
-            .header-logo {
-                width: 50px;
-                height: 50px;
+            .header p {
+                font-size: 1rem;
             }
 
-            .topic-header h3 {
-                font-size: 1.2em;
+            .files-grid {
+                grid-template-columns: 1fr;
             }
 
-            .document-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
+            .category-toggle {
+                font-size: 1rem;
             }
 
-            .download-btn {
-                width: 100%;
-                text-align: center;
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/1-Center%20Web.html" class="back-button">Volver al inicio</a>
+        <h1>Archivos</h1>
+        <p>Sistema de gestión y herramientas digitales</p>
+    </div>
+
     <div class="container">
-        <div class="top-nav">
-            <a class="back" href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/1-Center%20Web.html">Volver al Inicio</a>
-            <div class="search-container">
-                <input type="text" class="search-box" id="searchBox" placeholder="Buscar documentos..." oninput="buscarDocumentos()">
-            </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar archivos...">
         </div>
 
-        <header>
-            <h1>HERRAMIENTAS DIGITALES</h1>
-            <img src="https://static.vecteezy.com/system/resources/previews/017/444/146/original/batman-logo-free-png.png" alt="Logo" class="header-logo">
-        </header>
-        <p style="text-align:center; margin-top:-20px; margin-bottom:32px; font-size:1rem; color:#ffffff;">Sistema de gestión y archivo</p>
+        <div id="categoriesContainer">
+            <!-- Categorías se generan dinámicamente -->
+        </div>
 
-        <section class="topics-section" id="topicsSection"></section>
-
-        <footer>
-            <div class="author">
-                <strong>Sistema de Documentos</strong>
-                <small>Versión 1.0</small>
-            </div>
-        </footer>
+        <div id="noResults" class="no-results" style="display: none;">
+            No se encontraron archivos que coincidan con tu búsqueda.
+        </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN DE DOCUMENTOS
-        // Aquí el desarrollador puede agregar sus documentos organizados por tema
-        const documentosData = {
-            "PYTHON": [
-                {
-                    titulo: "Calculadora Booleana",
-                    formato: "PYTHON",
-                    tamaño: "2.5 KB",
-                    fecha: "15/10/2025",
-                    url: "http://127.0.0.1:5500/Controlador/C%C3%B3digos/L%C3%B3gica%20Booleana.py"
-                },
-                {
-                    titulo: "Calculadora Binaria",
-                    formato: "PYTHON",
-                    tamaño: "890 KB",
-                    fecha: "10/10/2025",
-                    url: "#"
-                }
-            ],
-            "PHP": [
-                {
-                    titulo: "Presupuesto Anual 2025",
-                    formato: "PHP",
-                    tamaño: "3.1 KB",
-                    fecha: "20/10/2025",
-                    url: "#"
-                },
-                {
-                    titulo: "Reporte Trimestral Q3",
-                    formato: "PHP",
-                    tamaño: "5.4 KB",
-                    fecha: "18/10/2025",
-                    url: "#"
-                }
-            ],
-            "JAVA SCRIPT": [
-                {
-                    titulo: "Plan de Marketing Digital",
-                    formato: "JAVA SCRIPT",
-                    tamaño: "4.2 KB",
-                    fecha: "22/10/2025",
-                    url: "#"
-                },
-                {
-                    titulo: "Guía de Marca",
-                    formato: "JAVA SCRIPT",
-                    tamaño: "12.8 KB",
-                    fecha: "12/10/2025",
-                    url: "#"
-                }
-            ],
-            "CSS": [
-                {
-                    titulo: "Documentación API v2.0",
-                    formato: "CSS",
-                    tamaño: "6.7 KB",
-                    fecha: "25/10/2025",
-                    url: ""
-                },
-                {
-                    titulo: "Manual de Instalación",
-                    formato: "CSS",
-                    tamaño: "1.9 KB",
-                    fecha: "20/10/2025",
-                    url: "#"
-                }
-            ]
-        };
-
-        function getIconoFormato(formato) {
-            const iconos = {
-                'PDF': '',
-                'DOCX': '',
-                'XLSX': '',
-                'PPTX': '',
-                'ZIP': '',
-                'TXT': '',
-                'PYTHON': '',
-                'PHP': '',
-                'JAVA SCRIPT': '',
-                'CSS': ''
-            };
-            return iconos[formato] || '📄';
-        }
-
-        function crearDocumentos() {
-            const section = document.getElementById('topicsSection');
-            
-            Object.keys(documentosData).forEach((tema, index) => {
-                const documentos = documentosData[tema];
-                
-                const topicDiv = document.createElement('div');
-                topicDiv.className = 'topic';
-                
-                topicDiv.innerHTML = `
-                    <div class="topic-header" onclick="toggleTopic(${index})">
-                        <h3>${tema}</h3>
-                        <span class="topic-icon">-</span>
-                    </div>
-                    <div class="documents-list">
-                        ${documentos.map(doc => `
-                            <div class="document-item">
-                                <div class="document-icon">${getIconoFormato(doc.formato)}</div>
-                                <div class="document-info">
-                                    <div class="document-title">${doc.titulo}</div>
-                                    <div class="document-meta">${doc.formato} • ${doc.tamaño} • ${doc.fecha}</div>
-                                </div>
-                                <button class="download-btn" onclick="descargarDocumento('${doc.titulo}', '${doc.url}')">
-                                    Descargar
-                                </button>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                
-                section.appendChild(topicDiv);
-            });
-        }
-
-        function toggleTopic(index) {
-            const topics = document.querySelectorAll('.topic');
-            topics[index].classList.toggle('active');
-        }
-
-        function descargarDocumento(titulo, url) {
-            if (url && url !== '#' && url !== '') {
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = titulo;
-                a.target = '_blank';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-                alert(`Error: No se ha configurado la URL para "${titulo}"`);
+        // Datos de archivos - AQUÍ AGREGAS TUS ARCHIVOS COMO DESARROLLADOR
+        const categories = [
+            {
+                name: 'Documentos',
+                files: [
+                    { name: 'Soluciones_Derivadas.pdf', size: '2.5 MB', url: './archivos/Soluciones_Derivadas.pdf' },
+                    { name: 'Capacidades.pdf', size: '1.8 MB', url: './archivos/Capacidades.pdf' }
+                ]
+            },
+            {
+                name: 'Imágenes',
+                files: [
+                    { name: 'Logo_Empresa.png', size: '856 KB', url: './archivos/Logo_Empresa.png' },
+                    { name: 'Banner_Principal.jpg', size: '1.2 MB', url: './archivos/Banner_Principal.jpg' },
+                    { name: 'Iconos_Sistema.svg', size: '245 KB', url: './archivos/Iconos_Sistema.svg' }
+                ]
+            },
+            {
+                name: 'Hojas de Cálculo',
+                files: [
+                    { name: 'Presupuesto_2024.xlsx', size: '3.1 MB', url: './archivos/Presupuesto_2024.xlsx' },
+                    { name: 'Inventario.xlsx', size: '2.7 MB', url: './archivos/Inventario.xlsx' }
+                ]
+            },
+            {
+                name: 'Presentaciones',
+                files: [
+                    { name: 'Propuesta_Cliente.pptx', size: '4.5 MB', url: './archivos/Propuesta_Cliente.pptx' },
+                    { name: 'Informe_Anual.pptx', size: '5.2 MB', url: './archivos/Informe_Anual.pptx' }
+                ]
             }
-        }
+        ];
 
-        function buscarDocumentos() {
-            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
-            const topics = document.querySelectorAll('.topic');
-            
-            topics.forEach(topic => {
-                const documentItems = topic.querySelectorAll('.document-item');
-                let hasVisibleDocs = false;
-                
-                documentItems.forEach(item => {
-                    const title = item.querySelector('.document-title').textContent.toLowerCase();
-                    const meta = item.querySelector('.document-meta').textContent.toLowerCase();
-                    
-                    if (title.includes(searchTerm) || meta.includes(searchTerm)) {
-                        item.style.display = 'flex';
-                        hasVisibleDocs = true;
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-                
-                // Mostrar el tema si tiene documentos visibles
-                if (searchTerm && hasVisibleDocs) {
-                    topic.classList.add('active');
-                } else if (!searchTerm) {
-                    topic.classList.remove('active');
+        const container = document.getElementById('categoriesContainer');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+
+        // Renderizar categorías
+        function renderCategories(filter = '') {
+            container.innerHTML = '';
+            let hasResults = false;
+
+            categories.forEach((category, index) => {
+                const filteredFiles = category.files.filter(file => 
+                    file.name.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filteredFiles.length > 0) {
+                    hasResults = true;
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'category-section collapsed';
+                    categoryDiv.id = `category-${index}`;
+
+                    categoryDiv.innerHTML = `
+                        <div class="category-header" onclick="toggleCategory(${index})">
+                            <div class="category-info">
+                                <span class="category-title">${category.name}</span>
+                                <span class="category-count">${filteredFiles.length} archivo${filteredFiles.length !== 1 ? 's' : ''}</span>
+                            </div>
+                            <span class="category-toggle">▼</span>
+                        </div>
+                        <div class="files-container">
+                            <div class="files-grid">
+                                ${filteredFiles.map(file => `
+                                    <div class="file-card">
+                                        <span class="file-icon">📄</span>
+                                        <div class="file-info">
+                                            <div class="file-name">${file.name}</div>
+                                            <div class="file-size">${file.size}</div>
+                                        </div>
+                                        <button class="download-button" onclick="downloadFile('${file.name}', '${file.url}')" title="Descargar">
+                                            ⬇
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(categoryDiv);
                 }
-                
-                // Ocultar tema si no tiene documentos visibles
-                topic.style.display = (searchTerm && !hasVisibleDocs) ? 'none' : 'flex';
             });
+
+            noResults.style.display = hasResults ? 'none' : 'block';
         }
 
-        // Inicializar la página
-        crearDocumentos();
+        // Toggle categoría
+        function toggleCategory(index) {
+            const categoryDiv = document.getElementById(`category-${index}`);
+            categoryDiv.classList.toggle('collapsed');
+            categoryDiv.classList.toggle('expanded');
+        }
+
+        // Descargar archivo
+        function downloadFile(fileName, fileUrl) {
+            // Crear elemento de descarga
+            const a = document.createElement('a');
+            a.href = fileUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Búsqueda en tiempo real
+        searchInput.addEventListener('input', (e) => {
+            renderCategories(e.target.value);
+        });
+
+        // Renderizar inicialmente
+        renderCategories();
     </script>
 </body>
 </html>

@@ -1,12 +1,11 @@
 
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prototipo - Login Educ</title>
+    <title>Prototipo - Login Inst</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -29,9 +28,12 @@
         /* Sección Izquierda - 5/8 - Animación Interactiva */
         .animation-section {
             width: 62.5%;
-            background: linear-gradient(135deg, #000000 0%, #124da0 100%);
+            background: linear-gradient(135deg, #000000 0%, #000000 100%);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .grid-background {
@@ -39,48 +41,156 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.242) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(157, 159, 168, 0.312) 1px, transparent 1px);
+                linear-gradient(#124da0 1px, transparent 1px),
+                linear-gradient(90deg, #124da0 1px, transparent 1px);
             background-size: 40px 40px;
             opacity: 0.4;
             animation: gridMove 20s linear infinite;
         }
-        
-        .canvas-container {
-            width: 100%;
-            height: 100%;
+
+        @keyframes gridMove {
+            0% {
+                background-position: 0 0, 0 0;
+            }
+            100% {
+                background-position: 0 400px, 400px 0;
+            }
+        }
+
+        /* Animación de Generating */
+        .loader-wrapper {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 120px;
+            width: auto;
+            font-family: "Poppins", sans-serif;
+            font-size: 1.6em;
+            font-weight: 600;
+            user-select: none;
+            color: #fff;
+            scale: 3;
+            z-index: 10;
+            transform: translateY(-70px);
         }
-        .animation-section{
-            display: flex;
-        }
-        .animation-section .Eyes {
-            position: relative;
-            width: 60px;
-            height: 60px;
-            display: block;
-            background: radial-gradient(circle at center, #ffffff, #cccccc);
-            margin: 0 20px;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 5px 45px #ffffff80; inset: 0 0 20px #a7812e; inset: 0 0px 25px #00000080;
-        }
-        .Eyes::before {
-            content: '';
+
+        .loader {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 28px;
-            height: 28px;
-            background: radial-gradient(circle at center, #000000, #333333);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px #00000080;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            background-color: transparent;
+            mask: repeating-linear-gradient(
+                90deg,
+                transparent 0,
+                transparent 6px,
+                black 7px,
+                black 8px
+            );
+        }
+
+        .loader::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, #ff0 0%, transparent 50%),
+                radial-gradient(circle at 45% 45%, #f00 0%, transparent 45%),
+                radial-gradient(circle at 55% 55%, #0ff 0%, transparent 45%),
+                radial-gradient(circle at 45% 55%, #0f0 0%, transparent 45%),
+                radial-gradient(circle at 55% 45%, #00f 0%, transparent 45%);
+            mask: radial-gradient(
+                circle at 50% 50%,
+                transparent 0%,
+                transparent 10%,
+                black 25%
+            );
+            animation:
+                transform-animation 2s infinite alternate,
+                opacity-animation 4s infinite;
+            animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+        }
+
+        @keyframes transform-animation {
+            0% {
+                transform: translate(-55%);
+            }
+            100% {
+                transform: translate(55%);
+            }
+        }
+
+        @keyframes opacity-animation {
+            0%,
+            100% {
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            65% {
+                opacity: 0;
+            }
+        }
+
+        .loader-letter {
+            display: inline-block;
+            opacity: 0;
+            animation: loader-letter-anim 4s infinite linear;
+            z-index: 2;
+        }
+
+        .loader-letter:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .loader-letter:nth-child(2) {
+            animation-delay: 0.205s;
+        }
+        .loader-letter:nth-child(3) {
+            animation-delay: 0.31s;
+        }
+        .loader-letter:nth-child(4) {
+            animation-delay: 0.415s;
+        }
+        .loader-letter:nth-child(5) {
+            animation-delay: 0.521s;
+        }
+        .loader-letter:nth-child(6) {
+            animation-delay: 0.626s;
+        }
+        .loader-letter:nth-child(7) {
+            animation-delay: 0.731s;
+        }
+        .loader-letter:nth-child(8) {
+            animation-delay: 0.837s;
+        }
+        .loader-letter:nth-child(9) {
+            animation-delay: 0.942s;
+        }
+        .loader-letter:nth-child(10) {
+            animation-delay: 1.047s;
+        }
+
+        @keyframes loader-letter-anim {
+            0% {
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+                text-shadow: 0 0 4px #fff;
+                transform: scale(1.1) translateY(-2px);
+            }
+            20% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 0;
+            }
         }
 
         /* Sección Derecha - 3/8 - Información */
@@ -106,9 +216,7 @@
             background-clip: text;
             margin-bottom: 15px;
             letter-spacing: -2px;
-        }
-        .mod-title {
-            font-family:"Sans-serif"
+            font-family: "Sans-serif";
         }
 
         .subtitle {
@@ -148,12 +256,13 @@
             align-items: left;
             gap: 12px;
         }
+
         .enlace-item {
             display: flex;
             gap: 15px;     
         }
 
-        .google {
+        .google, .microsoft, .meta {
             width: 32px;
             height: 32px;
             border-radius: 8px;
@@ -161,42 +270,6 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-        }
-        .microsoft {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        .meta {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .card-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        } 
-
-        .card-content {
-            color: #ffffff;
-            line-height: 1.8;
-            font-size: 15px;
         }
 
         .highlight-card {
@@ -204,21 +277,21 @@
             border: 2px solid #ffffff;
             border-left: 6px solid #ffffff;
         }
+
         .formulario {
             margin-top: 20px;
         }
+
         .formulario .Username {
             position: relative;
             margin-bottom: 30px;
         }
 
-        .Password input:focus ~ label,
-        .Password input:valid ~ label {
-            top: -20px;
-            left: 0;
-            color: #124da0;
-            font-size: 12px;
+        .formulario .Password {
+            position: relative;
+            margin-bottom: 30px;
         }
+
         .formulario input {
             width: 100%;
             padding: 10px 0;
@@ -229,6 +302,7 @@
             background: transparent;
             outline: none;
         }
+
         .formulario label {
             position: absolute;
             top: 10px;
@@ -238,6 +312,7 @@
             pointer-events: none;
             transition: 0.5s;
         }
+
         .formulario input:focus ~ label,
         .formulario input:valid ~ label {
             top: -20px;
@@ -245,50 +320,52 @@
             color: #124da0;
             font-size: 12px;
         }
+
         .boton {
             text-align: center;
+            margin-top: 30px;
         }
+
         .boton button {
             padding: 10px 20px;
             font-size: 20px;
             color: #fff;
             background: #124da0;
-            border: 15px solid #ffffff;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
+
         .boton button:hover {
             background: #a00000;
         }
-        @keyframes gridMove {
-            0% {
-                background-position: 0 0, 0 0;
-            }
-            100% {
-                background-position: 0 400px, 400px 0;
-            }
-        }
+
         .registro {
             margin-top: 15px;
             text-align: center;
         }
+
         .registro p {
             font-size: 14px;
             color: #555;
         }
+
         .registro a {
             color: #124da0;
             text-decoration: none;
         }
+
         .institución {
             margin-top: 15px;
             text-align: center;
         }
+
         .institución p {
             font-size: 14px;
             color: #555;
         }
+
         .institución a {
             color: #a00000;
             text-decoration: none;
@@ -300,7 +377,20 @@
         <!-- Sección Izquierda: 5/8 - Animación Interactiva -->
         <div class="animation-section">
             <div class="grid-background"></div>
-        </div> 
+            <div class="loader-wrapper">
+                <span class="loader-letter">G</span>
+                <span class="loader-letter">e</span>
+                <span class="loader-letter">n</span>
+                <span class="loader-letter">e</span>
+                <span class="loader-letter">r</span>
+                <span class="loader-letter">a</span>
+                <span class="loader-letter">t</span>
+                <span class="loader-letter">i</span>
+                <span class="loader-letter">n</span>
+                <span class="loader-letter">g</span>
+                <div class="loader"></div>
+            </div>
+        </div>
 
         <!-- Sección Derecha: 3/8 - Información -->
         <div class="info-section">
@@ -328,25 +418,24 @@
                             <input type="text" required>
                             <label>Institución</label>
                         </div>
-                        <div class="Password"></div>
+                        <div class="Password">
                             <input type="password" required>
-                            <label></label>
-                        <div>
+                            <label>Password</label>
+                        </div>
 
                         <div class="boton">
                             <button type="submit">Login</button>
                         </div>
                     </form>
                     <div class="registro">
-                        <p>¿No tienes una cuenta? <a href="http://127.0.0.1:5500/Vista/prueba.html#">Regístrate aquí</a></p>
+                        <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
+                    </div>
+                    <div class="institución">
+                        <p><a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Login%20User.html">Institución?</a></p>
+                    </div>
                 </div>
-            <div>
+            </div>
         </div>
     </div>
-<div>
-    <div class="institución">
-        <p><a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Login%20User.html">Usuario?</a></p>
-    </div>
-</div>
 </body>
 </html>
