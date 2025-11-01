@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -7,16 +6,15 @@
   <title>Multimedia</title>
   <style>
     :root{
-      --bg1: #000000; /* negro rojizo oscuro */
-      --bg2: #323232; /* rojo oscuro profundo */
-      --accent: #ffd86b; /* dorado */
+      --bg1: #000000;
+      --bg2: #323232;
+      --accent: #ffd86b;
       --led: #00ffd1;
       --card-border: #ff000099;
       --radius: 12px;
       font-family: "Inter", system-ui, "Segoe UI", Roboto, Arial;
     }
 
-    /* Fondo degradado tipo la imagen */
     html,body{
       height:100%;
       margin:0;
@@ -27,9 +25,9 @@
     }
 
     .container{
-      max-width:1100px;
-      margin:28px auto;
-      padding:28px;
+      max-width:950px;
+      margin:24px auto;
+      padding:24px;
     }
 
     .back {
@@ -47,11 +45,12 @@
     }
 
     header{
+      position: static; /* Asegura que sea estático */
       text-align:center;
       margin-bottom:22px;
     }
     header h1{
-      color: #124da0;
+      color: #a00000;
       margin:0;
       font-size:2.6rem;
       letter-spacing:0.6px;
@@ -63,7 +62,6 @@
       color: #ffffff;
     }
 
-    /* Contenedor del video */
     .video-card{
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
       border-radius: var(--radius);
@@ -85,23 +83,23 @@
 
     .video-wrap{
       width:100%;
-      height:55vh;
-      max-height:680px;
-      min-height:320px;
+      aspect-ratio: 16 / 9;
       border-radius:8px;
       overflow:hidden;
       background:#000;
       border: 1px solid rgba(0,0,0,0.6);
+      position: relative;
     }
 
-    .video-wrap iframe{
+    .video-wrap iframe,
+    .video-wrap video {
       width:100%;
       height:100%;
       display:block;
       border:0;
+      object-fit: contain;
     }
 
-    /* Cuadrícula 2x2 */
     .grid{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
@@ -201,11 +199,6 @@
       .video-wrap{ height:44vh; min-height:220px; }
       header h1{ font-size:2rem; }
     }
-    .video-wrap video {
-    width: 100%;
-    height: 90%;
-    object-fit: contain;
-}
   </style>
 </head>
 <body>
@@ -217,14 +210,12 @@
       <p>Galeria de fotos y videos informativos</p>
     </header>
 
-    <!-- Video principal -->
-<section class="video-card">
+    <section class="video-card">
       <div class="video-wrap">
-        <video src="http://127.0.0.1:5500/Vista/MULTIMEDIA/PRUEBA1_DE_VIDEO.mp4" controls autoplay muted loop></video>
+        <video src="http://127.0.0.1:5500/Vista/MULTIMEDIA/F1.mp4" controls autoplay muted loop></video>
       </div>
-</section>
+    </section>
 
-    <!-- Cuadrícula de imágenes -->
     <section class="grid">
       <article class="card">
         <img src="https://s1.1zoom.me/big7/488/Nissan_Tuning_GT-R_White_576101_1920x1080.jpg" alt="Imagen1" />
@@ -255,7 +246,6 @@
       </article>
     </section>
 
-    <!-- Pie de página -->
     <footer>
       <div class="author">
         <strong>Empresa</strong>
