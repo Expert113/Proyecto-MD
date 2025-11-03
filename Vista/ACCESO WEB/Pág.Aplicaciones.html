@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -7,155 +6,352 @@
     <title>Aplicaciones - Proyecto MD</title>
     <style>
         :root{
-            --bg:#323232;
-            --card:#323232;
-            --accent:#a00000;
-            --muted:#6b7280;
-            --shadow: 0 1px 3px #10182800;
-            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            --bg1: #000000;
+            --bg2: #323232;
+            --accent: #ffd86b;
+            --led: #00ffd1;
+            --card-border: #ff000099;
+            --radius: 12px;
+            font-family: "Inter", system-ui, "Segoe UI", Roboto, Arial;
         }
 
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            margin:0;
-            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(180deg,var(--bg), #050607);
-            color: #eaf7ef;
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-    }
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        body{ margin:0; background:var(--bg); color:#ffffff; }
+        html, body{
+            height: 100%;
+            margin: 0;
+            background: radial-gradient(var(--bg1) 0%, var(--bg2) 100%);
+            color: #f2f2f2;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container{
+            max-width: 950px;
+            margin: 24px auto;
+            padding: 24px;
+        }
+
+        .back {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+        .back::before{
+            content: "←";
+            opacity: 0.9;
+        }
+
         header{
-            background:linear-gradient(90deg,var(--accent),#124da0);
-            color:#fff;
-            padding:18px 24px;
-            display:flex;
-            align-items:center;
-            gap:16px;
-            box-shadow: 0 2px 6px #ffffff1f;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        header h1{
+            color: #a00000;
+            margin: 0;
+            font-size: 2.6rem;
+            letter-spacing: 0.6px;
+            text-shadow: 0 6px 20px #000000;
+        }
+        header p{
+            margin: 12px 0 0;
+            font-size: 1rem;
+            color: #ffffff;
         }
 
-        header h1{ font-size:18px; margin:0; font-weight:600;}
-        .container{ max-width:1100px; margin:20px auto; padding:16px; }
-        .controls{ display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
-        .search {
-            flex:1 1 320px;
-            display:flex;
-            align-items:center;
-            background:var(--card);
-            padding:8px 12px;
-            border-radius:8px;
-            border-color: #ffffff;
-            box-shadow:var(--shadow);
+        .controls{
+            display: flex;
+            gap: 16px;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
         }
-        .subjectFilter {
-            flex:1 1 320px;
-            display:flex;
-            align-items:center;
-            background:var(--card);
-            padding:10px 20px;
-            border-radius:8px;
-            box-shadow:var(--shadow);
-            color: #000;;
+
+        .search-box {
+            flex: 1 1 320px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .search input{
-            border:10; outline:none; font-size:15px; width:100%;
-            background:transparent;
-            border-color: #000000;
-            border-radius: 15px;
+
+        .search-box::before {
+            content: "";
+            font-size: 1.2rem;
+            opacity: 0.7;
         }
-        .sections { display:grid; gap:18px; }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            width: 100%;
+            background: transparent;
+            color: #f2f2f2;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .filter-box {
+            flex: 0 1 240px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .filter-box select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f2f2f2;
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 2px 0;
+        }
+
+        .filter-box select option {
+            background: #1a1a1a;
+            color: #f2f2f2;
+        }
+
+        .sections {
+            display: grid;
+            gap: 20px;
+        }
+
         .subject {
-            background:var(--card);
-            border-radius:50px;
-            padding:14px;
-            box-shadow:var(--shadow);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45), 0 0 18px rgba(0,0,0,0.25) inset;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
         }
-        .subject h2 { margin:0 0 8px 0; font-size:16px; display:flex; justify-content:space-between; align-items:center; }
-        .cards { display:flex; gap:12px; flex-wrap:wrap; }
+
+        .subject::after {
+            content: " ";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow: 0 0 20px 4px rgba(255,0,0,0.06);
+        }
+
+        .subject h2 {
+            margin: 0 0 16px 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject h2 small {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            background: rgba(255,0,0,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,0,0,0.3);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
         .app-card {
-            background:linear-gradient(180deg,#323232,#323232);
-            border-radius:8px;
-            padding:10px;
-            width:220px;
-            box-shadow:0 1px 4px #000000;
-            display:flex;
-            gap:10px;
-            align-items:center;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.35s;
+            position: relative;
+            overflow: hidden;
         }
-        .app-thumb{
-            width:48px; height:48px; background:#124da0; border-radius:8px;
-            display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--accent);
+
+        .app-card::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,0,0,0.3), rgba(255,255,255,0.05));
         }
-        .app-info{ flex:1; }
-        .app-info h3{ margin:0; font-size:14px; color:#ffffff}
-        .app-info p{ margin:4px 0 0; font-size:12px; color:#ffffff}
-        .no-results{ color:#ffffff; padding:12px 0; font-size:14px; }
-        footer{ text-align:center; color:var(--muted); padding:24px 0; font-size:13px; }
-        a.btn {
-            background:rgba(255,255,255,.12);
-            color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; font-size:14px;
-            border:1px solid rgba(255,255,255,.08);
+
+        .app-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.6), 0 0 30px rgba(255,0,0,0.2);
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.05));
         }
-        @media (max-width:640px){
-            .app-card{ width:100%; }
-            .cards{ flex-direction:column; }
+
+        .app-thumb {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #a00000, #c00000);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(160,0,0,0.4);
+            flex-shrink: 0;
+        }
+
+        .app-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.95);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-info p {
+            margin: 0;
+            font-size: 0.825rem;
+            color: rgba(255,255,255,0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.1rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer {
+            margin-top: 28px;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(255,255,255,0.05));
+            border: 1px solid rgba(0,0,0,0.6);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 880px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .search-box,
+            .filter-box {
+                flex: 1 1 auto;
+                padding: 10px 14px;
+            }
+            .search-box input,
+            .filter-box select {
+                font-size: 0.9rem;
+            }
+            .container {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/1-Center%20Web.html" return false; class="btn" title="Volver">← Volver a inicio</a>
-        <h1>Aplicaciones </h1>
-    </header>
+    <div class="container">
+        <a class="back" href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/1-Center%20Web.html">Volver al Inicio</a>
 
-    <main class="container">
-        <div class="controls">
-            <div class="search" role="search">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <input id="searchInput" type="search" placeholder= "   Buscar por nombre de aplicación..."  aria-label="Buscar aplicaciones por nombre" />
+        <header>
+            <h1>Aplicaciones</h1>
+            <p>Herramientas y calculadoras matemáticas</p>
+        </header>
+
+        <main>
+            <div class="controls">
+                <div class="search-box">
+                    <input id="searchInput" type="search" placeholder="Buscar por nombre de aplicación..." aria-label="Buscar aplicaciones" />
+                </div>
+                <div class="filter-box">
+                    <select id="subjectFilter" aria-label="Filtrar por materia">
+                        <option value="">Todas las materias</option>
+                    </select>
+                </div>
             </div>
-            <select id="subjectFilter" aria-label="Filtrar por materia">
-                <option value="">Todas las materias</option>
-            </select>
-        </div>
 
-        <section id="sections" class="sections" aria-live="polite">
-            <!-- Secciones renderizadas por JavaScript -->
-        </section>
+            <section id="sections" class="sections" aria-live="polite">
+                <!-- Secciones renderizadas por JavaScript -->
+            </section>
 
-        <footer>
-            Proyecto MD — Vista de aplicaciones
-        </footer>
-    </main>
+            <footer>
+                Proyecto MD — Vista de aplicaciones
+            </footer>
+        </main>
+    </div>
 
     <script>
         // Datos de ejemplo: reemplaza o carga desde tu backend si es necesario
-            const DATA = [
-        { 
-            id:1, 
-            name:"Calculadora Binaria", 
-            subject:"Matemáticas Discretas", 
-            desc:"Conversiones y operaciones binarias", 
-            link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Binaria.html"
-        },
-        { 
-            id:2, 
-            name:"Calculadora Booleana", 
-            subject:"Matemáticas Discretas", 
-            desc:"Operaciones con algebra booleana", 
-            link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Booleana.html"
-        },
-        { 
-            id:3, 
-            name:"Solución de Conjuntos", 
-            subject:"Matemáticas Discretas", 
-            desc:"Operaciones con conjuntos", 
-            link:"http://127.0.0.1:5500/Vista/APLICACIONES/Soluci%C3%B3n%20de%20Conjuntos.html"
-        }
-    ];
+        const DATA = [
+            { 
+                id:1, 
+                name:"Calculadora Binaria", 
+                subject:"Matemáticas Discretas", 
+                desc:"Conversiones y operaciones binarias", 
+                link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Binaria.html"
+            },
+            { 
+                id:2, 
+                name:"Calculadora Booleana", 
+                subject:"Matemáticas Discretas", 
+                desc:"Operaciones con algebra booleana", 
+                link:"http://127.0.0.1:5500/Vista/APLICACIONES/Calculadora%20Booleana.html"
+            },
+            { 
+                id:3, 
+                name:"Solución de Conjuntos", 
+                subject:"Matemáticas Discretas", 
+                desc:"Operaciones con conjuntos", 
+                link:"http://127.0.0.1:5500/Vista/APLICACIONES/Soluci%C3%B3n%20de%20Conjuntos.html"
+            }
+        ];
 
         const container = document.getElementById('sections');
         const searchInput = document.getElementById('searchInput');
@@ -167,7 +363,6 @@
                 (acc[app.subject] ??= []).push(app);
                 return acc;
             }, {});
-            
         }
 
         // Renderizar opciones de filtro de materia
@@ -206,7 +401,7 @@
                 const section = document.createElement('article');
                 section.className = 'subject';
                 const header = document.createElement('h2');
-                header.innerHTML = `${subj} <small style="font-weight:400;color:var(--muted);font-size:12px">${grouped[subj].length} aplicación(es)</small>`;
+                header.innerHTML = `${subj} <small>${grouped[subj].length} aplicación(es)</small>`;
                 section.appendChild(header);
 
                 const cards = document.createElement('div');
@@ -260,7 +455,10 @@
 
         // Permite búsqueda rápida con tecla Enter enfocada en input
         searchInput.addEventListener('keydown', (e)=>{
-            if(e.key === 'Escape') { searchInput.value=''; render('', subjectFilter.value); }
+            if(e.key === 'Escape') { 
+                searchInput.value=''; 
+                render('', subjectFilter.value); 
+            }
         });
     </script>
 </body>
