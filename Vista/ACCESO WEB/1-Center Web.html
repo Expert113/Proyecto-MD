@@ -17,7 +17,11 @@
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{
+      min-height: 100vh; /* Usa min-height en lugar de height */
+      margin: 0;
+      padding: 0;
+    }
     body{
       margin:0;
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
@@ -770,7 +774,7 @@
               <div class="label">Conexiones</div><div style="opacity:.8">→</div>
             </div>
             <div class="item" onclick="alert('Abrir Comms')">
-              <div class="label">Extras</div><div style="opacity:.8">→</div>
+              <div class="label">Instituciones</div><div style="opacity:.8">→</div>
             </div>
 
             <div style="margin-top:12px">
@@ -779,72 +783,6 @@
             </div>
           </div>
         </aside>
-      </div>
-    </div>
-
-    <div id="s_galeria" class="panel" style="margin-top:18px;display:none">
-      <h2>Galería</h2>
-      <p class="small">Imágenes y assets para presentaciones.</p>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px">
-        <img src="" alt="gallery1" style="height:120px;object-fit:cover;border-radius:8px">
-        <img src="" alt="gallery2" style="height:120px;object-fit:cover;border-radius:8px">
-        <img src="" alt="gallery3" style="height:120px;object-fit:cover;border-radius:8px">
-      </div>
-
-      <a class="vermas" href="#" onclick="event.preventDefault();toggleMore('gal_more')">Ver más</a>
-      <div id="gal_more" style="display:none;margin-top:10px;color:var(--muted)">
-        Galería extendida: concept art, renders y capturas de alta resolución.
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="enlaces-container">
-          <div class="enlace-item">
-            <div class="enlace-item-inner">
-              <a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Archivos.html">📄 Archivos</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="s_videos" class="panel" style="margin-top:18px;display:none">
-      <h2>Videos</h2>
-      <p class="small">Trailers, clips de jugabilidad y streams.</p>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
-        <video controls src=""></video>
-        <video controls src=""></video>
-      </div>
-
-      <div style="margin-top:12px">
-        <div class="enlaces-container">
-          <div class="enlace-item">
-            <div class="enlace-item-inner">
-              <a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Multimedia.html">💼 Multimedia</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="s_vermas" class="panel" style="margin-top:18px;display:none">
-      <h2>Ver más</h2>
-      <p class="small">Recursos adicionales, enlaces y descargas.</p>
-      <ul style="color:var(--muted);">
-        <li>Documentación completa</li>
-        <li>Descargas (skins, wallpapers)</li>
-        <li>Foros y comunidad</li>
-      </ul>
-
-      <div style="margin-top:12px">
-        <div class="enlaces-container">
-          <div class="enlace-item">
-            <div class="enlace-item-inner">
-              <a href="http://127.0.0.1:5500/Vista/ACCESO%20WEB/Herramientas.html">🔧 Herramientas</a>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
