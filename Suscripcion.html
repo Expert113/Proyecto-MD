@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PIXELIA - Suscripciones</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700&display=swap');
+
+*,
+*:before,
+*:after{
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(255,255,255,0);
+  outline: 1px solid transparent;
+}
+
+body{ 
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  animation: fadeIn .8s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: slideDown 1s ease-out;
+}
+
+.logo {
+  font-size: 48px;
+  font-weight: 700;
+  color: #DC0000;
+  letter-spacing: 8px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 30px rgba(220, 0, 0, 0.5);
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #888;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.plans-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1600px;
+}
+
+.wrapper{
+  width: 280px;
+  height: 500px;
+  perspective: 1000px;
+  position: relative;
+}
+
+.card{
+  width: 280px;
+  height: 500px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(-140px);
+  transition: transform 450ms cubic-bezier(0.390, 0.575, 0.565, 1.000);
+  cursor: pointer;
+}
+
+.card > div{
+  position: absolute;
+  width: 280px;
+  height: 500px;
+  padding: 35px 25px;
+  transition: all 450ms cubic-bezier(0.390, 0.575, 0.565, 1.000);
+  border: 1px solid rgba(220, 0, 0, 0.2);
+}
+
+.front{
+  background: linear-gradient(135deg, rgba(220, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.95) 100%);
+  transform: rotateY(0deg) translateZ(140px); 
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.right{ 
+  background: linear-gradient(135deg, rgba(220, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.98) 100%);
+  opacity: 0;
+  transform: rotateY(90deg) translateZ(140px);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover{
+  transform: translateZ(-140px) rotateY(-90deg);
+}
+
+.card:hover .front{
+  opacity: 0; 
+}
+
+.card:hover .right{
+  opacity: 1; 
+}
+
+/* Estado activo */
+.card.active .front{
+  border: 2px solid #DC0000;
+  box-shadow: 0 0 40px rgba(220, 0, 0, 0.5);
+}
+
+.card.active .right{
+  border: 2px solid #DC0000;
+  box-shadow: 0 0 40px rgba(220, 0, 0, 0.5);
+}
+
+h1{
+  margin: 30px 0 10px 0;
+  font-size: 36px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #DC0000;
+  text-transform: uppercase;
+}
+
+h2{
+  margin: 0 0 20px 0;
+  font-size: 28px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #DC0000;
+  text-transform: uppercase;
+}
+
+.plan-type{
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.description{
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ccc;
+  margin-bottom: 25px;
+}
+
+ul{
+  margin: 0;
+  padding: 0 0 0 20px;
+  font-size: 13px;
+  font-weight: 300;
+  list-style: none;
+}
+
+li{
+  padding: 10px 0;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #ddd;
+}
+
+li:before{
+  content: '✓';
+  position: absolute;
+  left: -20px;
+  color: #DC0000;
+  font-weight: 700;
+}
+
+button{
+  position: absolute;
+  right: 25px; 
+  bottom: 35px;
+  border: 2px solid #DC0000;
+  box-shadow: none;
+  background: transparent;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 13px;  
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 12px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(220, 0, 0, 0.3);
+  transform: scale(0) skewY(10deg);
+  transition: all 200ms cubic-bezier(0.390, 0.575, 0.565, 1.000);
+  transform-origin: right bottom;
+}
+
+button.current{
+  background: #555;
+  border-color: #888;
+  cursor: default;
+}
+
+button.current:hover{
+  background: #555;
+  border-color: #888;
+  transform: scale(1) skewY(0);
+}
+
+.card:hover button{
+  transform: scale(1) skewY(0);
+}
+
+.card:not(:hover) button{
+  opacity: 0;
+}
+
+button:hover:not(.current){
+  background: #DC0000;
+  box-shadow: 0 0 30px rgba(220, 0, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.price{
+  position: absolute;
+  bottom: 35px;
+  left: 25px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #DC0000;
+}
+
+.price span{
+  font-size: 16px;
+  color: #888;
+  margin-left: 5px;
+}
+
+.badge{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #DC0000;
+  color: #fff;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.current-badge{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #124da0;
+  color: #fff;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Control de suscripción */
+.subscription-control {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(220, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.subscription-control h3 {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #DC0000;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.subscription-control select {
+  width: 100%;
+  padding: 10px;
+  background: rgba(220, 0, 0, 0.1);
+  border: 1px solid rgba(220, 0, 0, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.subscription-control select:hover {
+  border-color: #DC0000;
+}
+
+@keyframes fadeIn{
+  0%{
+    opacity: 0;
+    transform: scale(.9);
+  }
+}
+
+@keyframes slideDown{
+  0%{
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+@media only screen and (max-width: 1400px){
+  .wrapper{
+    width: 260px;
+    height: 480px;
+  }
+  
+  .card, .card > div{
+    width: 260px;
+    height: 480px;
+  }
+  
+  .plans-container{
+    gap: 25px;
+  }
+}
+
+@media only screen and (max-width: 1200px){
+  .plans-container{
+    max-width: 900px;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  .plans-container{
+    gap: 30px;
+  }
+  
+  .wrapper{
+    width: 300px;
+    height: 500px;
+  }
+  
+  .card, .card > div{
+    width: 300px;
+    height: 500px;
+  }
+  
+  .logo{
+    font-size: 36px;
+  }
+  
+  .subscription-control {
+    position: static;
+    margin-bottom: 30px;
+  }
+}
+</style>
+</head>
+<body>
+  <!-- Control de suscripción para pruebas -->
+  <div class="subscription-control">
+    <h3>Simular Suscripción</h3>
+    <select id="currentPlan" onchange="updateSubscription()">
+      <option value="free">Free</option>
+      <option value="essentials">Essentials</option>
+      <option value="premium">Premium</option>
+      <option value="corse">Corse</option>
+    </select>
+  </div>
+
+  <div class="header">
+    <div class="logo">PixelIA</div>
+    <div class="subtitle">Planes de Suscripción Exclusivos</div>
+  </div>
+  
+  <div class="plans-container">
+    <!-- Plan Free -->
+    <div class="wrapper">
+      <div class="card" data-plan="free">
+        <div class="front">
+          <div class="current-badge" style="display: none;">Actual</div>
+          <h1>Free</h1>
+          <p class="plan-type">Acceso gratuito</p>
+          <p class="description">Prueba las funciones de forma limitada</p>
+          <p class="price">Gratuito<span></span></p>
+        </div>
+        <div class="right">
+          <h2>Free</h2>
+          <ul>
+            <li>Límite de Consultas de IA: 3 consultas por día.</li>
+            <li>Funcionalidad: Acceso a funciones básicas de repositorio y búsqueda.</li>
+            <li>Social: Límite de 1 comunidad o grupo.</li>
+            <li>Apoyo de IA: Solo consultas de texto.</li>
+          </ul>
+          <button data-plan="free">Actual</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan Essentials -->
+    <div class="wrapper">
+      <div class="card" data-plan="essentials">
+        <div class="front">
+          <div class="current-badge" style="display: none;">Actual</div>
+          <h1>Essentials</h1>
+          <p class="plan-type">Acceso Básico</p>
+          <p class="description">Comienza tu experiencia con acceso a contenido exclusivo.</p>
+          <p class="price">$49mx<span>/mes</span></p>
+        </div>
+        <div class="right">
+          <h2>Essentials</h2>
+          <ul>
+            <li>Límite de Consultas de IA: 3 consultas por día.</li>
+            <li>Generación de Mapas conceptuales y Diagramas de flujo.</li>
+            <li>Social: Comunidades ilimitadas</li>
+            <li>Apoyo Práctico: Resolución paso a paso de problemas</li>
+            <li>Extras: Exportación de materiales en múltiples formatos.</li>
+          </ul>
+          <button data-plan="essentials">Suscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan Premium -->
+    <div class="wrapper">
+      <div class="card" data-plan="premium">
+        <div class="front">
+          <div class="current-badge" style="display: none;">Actual</div>
+          <div class="badge">Popular</div>
+          <h1>Premium</h1>
+          <p class="plan-type">Experiencia Completa</p>
+          <p class="description">Acceso total a experiencias, mucho menos limitadas.</p>
+          <p class="price">$79mx<span>/mes</span></p>
+        </div>
+        <div class="right">
+          <h2>Premium</h2>
+          <ul>
+            <li>Consultas de IA: Ilimitadas</li>
+            <li>Apoyo Gráfico: Todo Essentials más Infografías educativas y Visualizaciones de datos</li>
+            <li>Apoyo Práctico Avanzado: Todo Essentials más Simulaciones interactivas (física, química, etc.).</li>
+            <li>Extras: Analíticas de progreso personalizadas</li>
+            <li>Prioridad: Prioridad estándar en respuestas de IA.</li>
+          </ul>
+          <button data-plan="premium">Suscribirse</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan Corse -->
+    <div class="wrapper">
+      <div class="card" data-plan="corse">
+        <div class="front">
+          <div class="current-badge" style="display: none;">Actual</div>
+          <div class="badge">Elite</div>
+          <h1>Corse</h1>
+          <p class="plan-type">Máxima Exclusividad</p>
+          <p class="description">La experiencia definitiva. Acceso ilimitado, eventos privados y beneficios únicos.</p>
+          <p class="price">$99mx<span>/mes</span></p>
+        </div>
+        <div class="right">
+          <h2>Corse</h2>
+          <ul>
+            <li>Consultas de IA: Ilimitadas.</li>
+            <li>Apoyo Gráfico "Elite": Todo lo de Premium más:</li>
+            <li>Modelos 3D interactivos (para ciencias).</li>
+            <li>Generador de exámenes adaptativos y acceso al Tutor virtual 24/7.</li>
+            <li>Prioridad: Acceso prioritario a respuestas más rápidas</li>
+            <li>Acceso beta a nuevas funciones.</li>
+          </ul>
+          <button data-plan="corse">Suscribirse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variable para almacenar el plan actual (simula tu suscripción)
+    let userCurrentPlan = 'free';
+
+    function updateSubscription() {
+      userCurrentPlan = document.getElementById('currentPlan').value;
+      updatePlanDisplay();
+    }
+
+    function updatePlanDisplay() {
+      // Obtener todas las tarjetas
+      const cards = document.querySelectorAll('.card');
+      
+      cards.forEach(card => {
+        const planName = card.getAttribute('data-plan');
+        const button = card.querySelector('button');
+        const currentBadge = card.querySelector('.current-badge');
+        
+        // Remover clase activa de todas las tarjetas
+        card.classList.remove('active');
+        
+        // Ocultar todos los badges de "Actual"
+        if (currentBadge) {
+          currentBadge.style.display = 'none';
+        }
+        
+        // Si es el plan actual
+        if (planName === userCurrentPlan) {
+          card.classList.add('active');
+          button.textContent = 'Actual';
+          button.classList.add('current');
+          if (currentBadge) {
+            currentBadge.style.display = 'block';
+          }
+        } else {
+          button.textContent = 'Suscribirse';
+          button.classList.remove('current');
+        }
+      });
+    }
+
+    // Event listeners para los botones
+    document.querySelectorAll('button[data-plan]').forEach(button => {
+      button.addEventListener('click', function(e) {
+        if (!this.classList.contains('current')) {
+          const planName = this.getAttribute('data-plan');
+          userCurrentPlan = planName;
+          document.getElementById('currentPlan').value = planName;
+          updatePlanDisplay();
+          alert(`¡Te has suscrito al plan ${planName.toUpperCase()}!`);
+        }
+      });
+    });
+
+    // Inicializar la visualización
+    updatePlanDisplay();
+  </script>
+</body>
+</html>

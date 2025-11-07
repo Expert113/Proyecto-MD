@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Álgebra Booleana</title>
     <style>
+        /* Uso de nombres standard para dar estilo */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -131,6 +132,7 @@
     </style>
 </head>
 <body>
+    <!-- Título y simbología -->
     <div class="container">
         <div class="header">
             <h1>Calculadora de Álgebra Booleana</h1>
@@ -151,9 +153,11 @@
                     </ul>
                 </div>
             </div>
+            <!-- Botón de cálculo junto con la indicación de detección de error -->
             <button class="calculate-btn" onclick="calcular()">Calcular</button>
             <div class="error" id="error"></div>
         </div>
+        <!-- Títulos de las secciones de resultado -->
         <div class="results" id="results">
             <div class="result-section">
                 <h2>1. Variables Identificadas</h2>
@@ -173,6 +177,7 @@
             </div>
         </div>
     </div>
+    <!-- Comienza cálculo con la identificación y conversión de variables-->
     <script>
         class CalculadoraBooleana {
             constructor(expr) {
@@ -232,6 +237,7 @@
                 }
                 return combs;
             }
+            /* Comienza la identificación y ubicación en el mapa de Karnaugh */
             genKarnaugh(res) {
                 if (this.n === 2) return this.k2(res);
                 if (this.n === 3) return this.k3(res);
@@ -361,6 +367,7 @@
                 return mt.length <= 6 ? terms.join(' v ') : `${terms.join(' v ')} v ... [${mt.length} términos]`;
             }
         }
+        /* Comienza a calcular la expresión dada, y reconoce si es valida, valores y verifica su escritura */
         function calcular() {
             const expr = document.getElementById('expression').value.trim();
             const err = document.getElementById('error');
@@ -372,6 +379,8 @@
                 err.classList.add('show');
                 return;
             }
+            /* Le da formato a la tabla de verdad, con verificación y hablidad de corrección al ser capaz de forzar 
+                a cualquier número mayor a 1 dado por los cálculos, a convertirse en 1 */
             try {
                 const calc = new CalculadoraBooleana(expr);
                 if (calc.n === 0) {
