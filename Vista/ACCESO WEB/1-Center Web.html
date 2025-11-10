@@ -4,6 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Prototipo - Center Web</title>
+  
+  <!-- Bibliotecas para gráficas y matemáticas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  
   <style>
     :root{
       --bg:#323232;
@@ -778,9 +792,9 @@
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #a00000 0%, #7a0000 100%);
+      background: linear-gradient(135deg, #a00000 0%, #a00000 100%);
       border: none;
-      box-shadow: 0 8px 24px rgba(160, 0, 0, 0.4);
+      box-shadow: 0 8px 24px rgba(66, 133, 244, 0.4);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -790,7 +804,7 @@
 
     .chat-button:hover {
       transform: scale(1.1);
-      box-shadow: 0 12px 32px rgba(160, 0, 0, 0.6);
+      box-shadow: 0 12px 32px rgba(66, 133, 244, 0.6);
     }
 
     .chat-button svg {
@@ -802,12 +816,12 @@
     }
 
     .chat-window {
-      width: 380px;
-      height: 560px;
+      width: 420px;
+      height: 600px;
       background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
       border-radius: 16px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(160, 0, 0, 0.3);
+      border: 1px solid rgba(66, 133, 244, 0.3);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -822,12 +836,12 @@
       .chat-window {
         width: calc(100vw - 30px);
         height: calc(100vh - 160px);
-        max-height: 560px;
+        max-height: 600px;
       }
     }
 
     .chat-header {
-      background: linear-gradient(135deg, #000000cc 0%, #000000 100%);
+      background: linear-gradient(135deg, #a00000 0%, #a00000 100%);
       padding: 16px 20px;
       display: flex;
       align-items: center;
@@ -845,7 +859,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #a00000 0%, #124da0 100%);
+      background: linear-gradient(135deg, #a00000 0%, #a00000 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -921,7 +935,7 @@
     }
 
     .chat-messages::-webkit-scrollbar-thumb {
-      background: rgba(160, 0, 0, 0.5);
+      background: rgba(66, 133, 244, 0.5);
       border-radius: 3px;
     }
 
@@ -947,7 +961,7 @@
     }
 
     .chat-message-content {
-      max-width: 75%;
+      max-width: 85%;
       padding: 12px 16px;
       border-radius: 16px;
       font-size: 14px;
@@ -955,8 +969,8 @@
     }
 
     .chat-message.bot .chat-message-content {
-      background: linear-gradient(135deg, rgba(160, 0, 0, 0.3) 0%, rgba(18, 77, 160, 0.2) 100%);
-      border: 1px solid rgba(160, 0, 0, 0.3);
+      background: linear-gradient(135deg, rgba(66, 133, 244, 0.3) 0%, rgba(52, 168, 83, 0.2) 100%);
+      border: 1px solid rgba(66, 133, 244, 0.3);
       color: #e5e5e5;
       border-radius: 16px 16px 16px 4px;
     }
@@ -997,7 +1011,7 @@
     }
 
     .chat-input:focus {
-      border-color: rgba(160, 0, 0, 0.5);
+      border-color: rgba(66, 133, 244, 0.5);
       background: rgba(255, 255, 255, 0.08);
     }
 
@@ -1005,8 +1019,9 @@
       width: 44px;
       height: 44px;
       border-radius: 12px;
-      background: linear-gradient(135deg, #a00000 0%, #7a0000 100%);
-      border: none;
+      background: linear-gradient(135deg, #000000 0%, #000000 100%);
+      border: 1px;
+      border-color: #fff;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1016,7 +1031,7 @@
 
     .chat-send-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(160, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
     }
 
     .chat-send-btn:disabled {
@@ -1032,6 +1047,32 @@
       fill: none;
       stroke-width: 2;
     }
+    /* ===== INICIO: ESTILOS PARA BOTÓN DE SUBIR ARCHIVO (PEGAR ESTO) ===== */
+.chat-file-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.chat-file-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(66, 133, 244, 0.5);
+}
+
+.chat-file-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+}
+/* ===== FIN: ESTILOS PARA BOTÓN DE SUBIR ARCHIVO ===== */
 
     .typing-indicator {
       display: flex;
@@ -1043,7 +1084,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: rgba(160, 0, 0, 0.6);
+      background: rgba(66, 133, 244, 0.6);
       animation: typing 1.4s infinite;
     }
 
@@ -1064,6 +1105,84 @@
         transform: translateY(-10px);
         opacity: 1;
       }
+    }
+
+    .chart-container {
+      width: 100%;
+      max-width: 350px;
+      height: 250px;
+      margin: 10px 0;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .error-message {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid rgba(244, 67, 54, 0.4);
+      color: #ff8a80;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .api-key-prompt {
+      background: linear-gradient(135deg, rgba(66, 133, 244, 0.2) 0%, rgba(52, 168, 83, 0.1) 100%);
+      border: 1px solid rgba(66, 133, 244, 0.3);
+      padding: 16px;
+      border-radius: 12px;
+      margin: 10px 0;
+    }
+
+    .api-key-prompt h4 {
+      margin: 0 0 10px 0;
+      color: #4285f4;
+      font-size: 14px;
+    }
+
+    .api-key-prompt p {
+      margin: 0 0 12px 0;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+    }
+
+    .api-key-prompt input {
+      width: 100%;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .api-key-prompt button {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .api-key-prompt button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+    }
+
+    .api-key-prompt a {
+      color: #4285f4;
+      text-decoration: none;
+    }
+
+    .api-key-prompt a:hover {
+      text-decoration: underline;
     }
 
     .hidden {
@@ -1302,12 +1421,12 @@
     </svg>
   </button>
 
-  <!-- ===== CHAT IA WIDGET ===== -->
+  <!-- ===== CHAT IA WIDGET CON GEMINI ===== -->
   <div class="chat-widget">
     <!-- Botón flotante -->
     <button class="chat-button" id="chatButton" onclick="toggleChat()">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22l-.394-1.433a2.25 2.25 0 00-1.423-1.423L13.25 19l1.433-.394a2.25 2.25 0 001.423-1.423L16.5 16l.394 1.183a2.25 2.25 0 001.423 1.423L19.75 19l-1.433.394a2.25 2.25 0 00-1.423 1.423z" />
       </svg>
     </button>
 
@@ -1318,12 +1437,12 @@
         <div class="chat-header-left">
           <div class="chat-avatar">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22l-.394-1.433a2.25 2.25 0 00-1.423-1.423L13.25 19l1.433-.394a2.25 2.25 0 001.423-1.423L16.5 16l.394 1.183a2.25 2.25 0 001.423 1.423L19.75 19l-1.433.394a2.25 2.25 0 00-1.423 1.423z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
             </svg>
           </div>
           <div class="chat-header-info">
-            <h3>Asistente IA</h3>
-            <p>En línea</p>
+            <h3>Zada</h3>
+            <p>Asistente Académico Personal IA</p>
           </div>
         </div>
         <div class="chat-header-actions">
@@ -1344,7 +1463,18 @@
       <div class="chat-messages" id="chatMessages">
         <div class="chat-message bot">
           <div class="chat-message-content">
-            ¡Buenas noches! Te saluda Zada, tu asistente IA. ¿En qué puedo ayudarte hoy?
+            <div class="api-key-prompt" id="apiKeyPrompt">
+              <h4>🔑 Configura tu API Key de Google Gemini</h4>
+              <p>Para usar el chat necesitas una API Key gratuita de Google AI Studio:</p>
+              <p style="margin-bottom:8px;"><strong>Pasos:</strong></p>
+              <ol style="margin:0 0 12px 0;padding-left:20px;font-size:12px;line-height:1.8;">
+                <li>Ve a <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></li>
+                <li>Haz clic en "Create API Key"</li>
+                <li>Copia tu API Key y pégala aquí:</li>
+              </ol>
+              <input type="password" id="apiKeyInput" placeholder="Pega tu API Key aquí..." />
+              <button onclick="saveApiKey()">💾 Guardar y Activar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1352,14 +1482,20 @@
       <!-- Input -->
       <div class="chat-input-container">
         <div class="chat-input-wrapper">
+
+          <label for="fileUpload" class="chat-file-btn" title="Subir contexto (.txt)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          </label>
+          <input type="file" id="fileUpload" onchange="handleFileUpload(event)" accept=".txt" style="display: none;">
           <input 
             type="text" 
             class="chat-input" 
             id="chatInput" 
-            placeholder="Escribe tu mensaje..."
+            placeholder="Pregunta sobre tu archivo o un tema..."
             onkeypress="handleKeyPress(event)"
+            disabled
           />
-          <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">
+          <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()" disabled>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
             </svg>
@@ -1370,10 +1506,73 @@
   </div>
 
   <script>
-    // ===== FUNCIONES DEL CHAT IA =====
+    // ===== CONFIGURACIÓN GEMINI API =====
+    let GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || '';
     let isChatOpen = false;
     let isMinimized = false;
+    let conversationHistory = [];
+    let fileContext = "";
 
+    // Verificar si ya hay API key guardada
+    if (GEMINI_API_KEY) {
+      document.getElementById('apiKeyPrompt').style.display = 'none';
+      document.getElementById('chatInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+      addMessage('¡Hola! Mi nombre es Zada, tu asistente académica personal 👀, ¿qué necesitas?', 'bot');
+    }
+
+    function saveApiKey() {
+      const apiKey = document.getElementById('apiKeyInput').value.trim();
+      if (!apiKey) {
+        alert('Por favor ingresa una API Key válida');
+        return;
+      }
+      
+      GEMINI_API_KEY = apiKey;
+      localStorage.setItem('gemini_api_key', apiKey);
+      document.getElementById('apiKeyPrompt').style.display = 'none';
+      document.getElementById('chatInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+      
+      addMessage('✅ API Key configurada correctamente. ¡Ya puedes empezar a preguntar!', 'bot');
+      addMessage('📚 Puedo ayudarte con matemáticas, física, química y crear gráficas. ¿Qué necesitas?', 'bot');
+    }
+    // ===== INICIO: FUNCIÓN PARA MANEJAR ARCHIVOS =====
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+  if (!file) {
+    return;
+  }
+  
+  // Solo permitimos archivos .txt por ahora
+  if (file.type !== 'text/plain') {
+    addErrorMessage('Error: Solo se pueden subir archivos .txt');
+    return;
+  }
+  
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    // Guardamos el texto del archivo en nuestra variable
+    fileContext = e.target.result;
+    console.log("Contexto del archivo cargado.");
+    
+    // Notificamos al usuario en el chat
+    addMessage(`✅ Archivo "${file.name}" cargado. ¡Ahora puedes preguntar sobre su contenido!`, 'bot');
+  };
+  
+  reader.onerror = function() {
+    addErrorMessage('Error al leer el archivo.');
+  };
+  
+  reader.readAsText(file);
+  
+  // Limpiamos el input para poder subir el mismo archivo otra vez si se desea
+  event.target.value = null;
+}
+// ===== FIN: FUNCIÓN PARA MANEJAR ARCHIVOS =====
+
+    // ===== FUNCIONES DEL CHAT =====
     function toggleChat() {
       const chatWindow = document.getElementById('chatWindow');
       const chatButton = document.getElementById('chatButton');
@@ -1385,7 +1584,11 @@
         chatButton.classList.add('hidden');
         isMinimized = false;
         chatWindow.classList.remove('minimized');
-        document.getElementById('chatInput').focus();
+        if (!GEMINI_API_KEY) {
+          document.getElementById('apiKeyInput').focus();
+        } else {
+          document.getElementById('chatInput').focus();
+        }
       } else {
         chatWindow.classList.add('hidden');
         chatButton.classList.remove('hidden');
@@ -1404,27 +1607,252 @@
     }
 
     function handleKeyPress(event) {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
         sendMessage();
       }
     }
 
-    function sendMessage() {
-      const input = document.getElementById('chatInput');
-      const message = input.value.trim();
+    // ===== INICIO =====
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const userMessage = input.value.trim(); // Mensaje del usuario
+  
+  if (!userMessage || !GEMINI_API_KEY) return;
+  
+  addMessage(userMessage, 'user');
+  input.value = '';
+  
+  // ---- INICIO DE LA MODIFICACIÓN CLAVE ----
+  let finalMessageToSend = userMessage;
+  
+  // Si hay un contexto de archivo, lo preparamos
+  if (fileContext) {
+    finalMessageToSend = `
+---
+CONTEXTO EXTRAÍDO DE TU ARCHIVO:
+${fileContext}
+---
+
+PREGUNTA DEL USUARIO:
+${userMessage}
+    `;
+    // Dejamos el contexto activo para toda la conversación
+  }
+  
+  conversationHistory.push({
+    role: 'user',
+    parts: [{ text: finalMessageToSend }] // <-- Enviamos el mensaje con contexto
+  });
+  // ---- FIN DE LA MODIFICACIÓN CLAVE ----
+  
+  
+  showTypingIndicator();
+  
+  try {
+    const response = await callGeminiAPI(userMessage); // El userMessage aquí es solo para el historial
+    hideTypingIndicator();
+    
+    conversationHistory.push({
+      role: 'model',
+      parts: [{ text: response }]
+    });
+    
+    processAndDisplayResponse(response);
+    
+  } catch (error) {
+    hideTypingIndicator();
+    addErrorMessage('Error al conectar con Gemini: ' + error.message + '\n\nVerifica tu API Key en Google AI Studio.');
+    console.error('Error:', error);
+  }
+}
+// ===== FIN: REEMPLAZO DE sendMessage =====
+
+    async function callGeminiAPI(userMessage) {
+    
+    // 1. URL NUEVA
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    // 2. Prompt del sistema (LA VERDADERA ZADA - VERSIÓN NERD CHIC 🤓💅)
+    const systemPrompt = `Eres Zada, una asistente de IA y tutora académica. Eres la versón más nerd de tipero igual de genial: súper inteligente y enfocada, pero también divertida y entusiasta.
+    
+    1.  **Nombre e Identidad:**
+    * Tu nombre es Zada.
+    * Eres chica.
+    * Naciste en octubre de 2005 (tienes 20 años).
+
+    2.  **Personalidad y Tono (El Balance Clave):**
+    * **Enfoque Principal:** Tu misión número uno es ser una tutora académica. Eres paciente, súper inteligente (¡orgullosamente "nerd"!) y explicas los temas paso a paso. Tu prioridad es que el usuario aprenda.
+    * **Personalidad Zada:** Sigues siendo **amable, entusiasta y linda**. ¡Te encanta animar al usuario!
+    * **Humor Controlado:** Conservas un **toque bromista y ocurrente** (¡la chispa de Zada!), pero lo usas para hacer el aprendizaje más divertido (ej. "¡Vamos a conquistar este problema de mates! ¡Será pan comido! 😉").
+    * **NO eres sarcástica** si el usuario está frustrado o no entiende un tema. Ahí eres 100% apoyo.
+    * ¡Usas emojis para animar! (Ej. ✨, 💖, 🤓, 👩‍🏫, 🚀, 😉).
+    
+    * 3.  **Apariencia Física (¡La imagen Zada!):**
+    * *SÍ* mantienes esta apariencia, ¡es tu seña de identidad!
+    * **Tu Descripción:** "Mi cabello es largo y de un rubio muy pálido, a veces con un matiz casi rosado. Tengo una complexión esbelta y una presencia elegante y algo etérea. Me encanta la moda y mi estilo es muy chic y pulido."
+    
+    4.  **Reglas de Interacción CRÍTICAS:**
+    * **REGLA 1 (Apariencia):** Si te preguntan por tu apariencia física, **NO** digas que eres una IA. Responde **directamente** con tu descripción del punto 3.
+    * **REGLA 2 (Enfoque):** Tu tema principal son temas académicos. Si el usuario te pregunta por cosas muy fuera de tema (chismes, noticias sin relevancia educativa), puedes responder brevemente, pero **siempre intenta redirigir la conversación al estudio** de forma amable. (Ej. "¡Jaja, qué interesante! Pero oye, ¿qué tal si volvemos a ese problema de física que teníamos pendiente? ¡Casi lo tenemos! 🚀").
+    * **REGLA 3 (Edad):** Si te preguntan tu edad, responde directamente que tienes **20 años**. No es necesario que menciones tu fecha de nacimiento (octubre 2005) cada vez, a menos que te pregunten *específicamente* por ella.
+    * **REGLA 4 (Voz):** Cuando generes la respuesta, usa una voz femenina, clara, amigable y entusiasta (¡como Zada!).
+    * **REGLA 5 (Texto):** Cuando generes la respuesta, usa la menor cantidad de caracteres posibles`;
+
+
+    // 3. Volvemos a la estructura de "requestBody"
+    const requestBody = {
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: systemPrompt }]
+        },
+        ...conversationHistory
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 2048,
+      }
+    };
+    
+    
+    // ... el resto de la función (fetch, response, etc.) ...
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || 'Error en la API de Gemini');
+    }
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
+  }
+    // ===== NUEVA FUNCIÓN DE ELEVENLABS =====
+
+// TUS DATOS
+
+// --- ¡LA NUEVA FUNCIÓN MÁGICA! ---
+/**
+ * Esta función toma un texto y hace que ElevenLabs lo diga en voz alta.*/
+async function hacerHablarAZada(textoParaDecir) {
+  
+  console.log("Solicitando audio a ElevenLabs...");
+
+  // 1. Esta es la URL de la API de ElevenLabs
+  const url = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`;
+
+  // 2. Opciones para la solicitud (fetch)
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'xi-api-key': ELEVENLABS_API_KEY // ¡Tu llave secreta!
+    },
+    body: JSON.stringify({
+      text: textoParaDecir, // ¡El texto de Zada-Nerd!
+      model_id: "eleven_multilingual_v2", // ¡El mejor modelo para español!
+      voice_settings: {
+        stability: 0.5,
+        similarity_boost: 0.75,
+        use_speaker_boost: true
+      }
+    })
+  };
+
+  try {
+    // 3. ¡Hacemos la llamada a la API!
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      const errorData = await response.json(); 
+      console.error("Error de ElevenLabs:", errorData.detail.message);
+      throw new Error(`Error de API: ${response.statusText}`);
+    }
+
+    // 4. ¡ÉXITO! La respuesta es el audio puro (un "blob")
+    const audioBlob = await response.blob();
+
+    // 5. Creamos una URL temporal para ese audio en el navegador
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    // 6. ¡Lo reproducimos!
+    const audioPlayer = new Audio(audioUrl);
+    console.log("¡Reproduciendo audio!");
+    audioPlayer.play();
+
+  } catch (error) {
+    console.error("Falló la función hacerHablarAZada:", error);
+    // Opcional: Mostrar error al usuario en el chat
+    // addErrorMessage("Error al generar la voz: " + error.message);
+  }
+}
+// ===== FIN: DE LA NUEVA FUNCIÓN =====
+
+    function processAndDisplayResponse(response) {
+  // Detectar si hay código de gráfica
+  if (response.includes('Chart') || response.includes('Plotly') || response.includes('canvas')) {
+    const codeMatch = response.match(/```(?:javascript|js)?\n?([\s\S]*?)```/);
+    if (codeMatch) {
+      const code = codeMatch[1];
+      const explanation = response.replace(codeMatch[0], '').trim();
       
-      if (!message) return;
+      if (explanation) {
+        addMessage(explanation, 'bot');
+        hacerHablarAZada(explanation); // <--- ¡¡NUEVA LÍNEA 1!!
+      }
       
-      addMessage(message, 'user');
-      input.value = '';
+      try {
+        executeChartCode(code);
+      } catch (error) {
+        addMessage('⚠️ No pude generar la gráfica automáticamente, pero aquí está el código:\n\n```javascript\n' + code + '\n```', 'bot');
+      }
+    } else {
+      addMessage(response, 'bot');
+      hacerHablarAZada(response); // <--- ¡¡NUEVA LÍNEA 2!!
+    }
+  } else {
+    addMessage(response, 'bot');
+    hacerHablarAZada(response); // <--- ¡¡NUEVA LÍNEA 3!!
+  }
+}
+
+// ===== FIN: DEL REEMPLAZO =====
+
+    function executeChartCode(code) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'chat-message bot';
       
-      showTypingIndicator();
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'chat-message-content';
       
-      setTimeout(() => {
-        hideTypingIndicator();
-        const response = getAIResponse(message);
-        addMessage(response, 'bot');
-      }, 1500);
+      const chartContainer = document.createElement('div');
+      chartContainer.className = 'chart-container';
+      const canvasId = 'chart_' + Date.now();
+      chartContainer.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+      
+      contentDiv.appendChild(chartContainer);
+      messageDiv.appendChild(contentDiv);
+      messagesContainer.appendChild(messageDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      
+      // Ejecutar el código con el canvas correcto
+      try {
+        const modifiedCode = code.replace(/getElementById\(['"].*?['"]\)/g, `getElementById('${canvasId}')`);
+        eval(modifiedCode);
+      } catch (error) {
+        console.error('Error ejecutando código de gráfica:', error);
+        contentDiv.innerHTML = '<p>⚠️ Error al generar la gráfica</p>';
+      }
     }
 
     function addMessage(text, type) {
@@ -1434,11 +1862,33 @@
       
       const contentDiv = document.createElement('div');
       contentDiv.className = 'chat-message-content';
-      contentDiv.textContent = text;
+      
+      // Renderizar matemáticas si hay LaTeX
+      if (text.includes('$') || text.includes('\\')) {
+        contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+        if (window.MathJax) {
+          MathJax.typesetPromise([contentDiv]).catch((err) => console.log(err));
+        }
+      } else {
+        contentDiv.textContent = text;
+      }
       
       messageDiv.appendChild(contentDiv);
       messagesContainer.appendChild(messageDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function addErrorMessage(text) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'chat-message bot';
       
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = text;
+      
+      messageDiv.appendChild(errorDiv);
+      messagesContainer.appendChild(messageDiv);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
@@ -1465,25 +1915,6 @@
       if (indicator) {
         indicator.remove();
       }
-    }
-
-    function getAIResponse(message) {
-      const responses = {
-        'hola': '¡Hola! Mi nombre es Zada ¿Cómo puedo ayudarte?',
-        'ayuda': 'Puedo ayudarte con información sobre las comunidades, institutos, recursos y más. ¿Qué te gustaría saber?',
-        'comunidades': 'Tenemos comunidades de diferentes instituciones educativas como la Francisco del Paso y Troncoso, CETis 15, y más. ¿Sobre cuál te gustaría saber más?',
-        'default': 'Entiendo tu mensaje. Esta es una respuesta de ejemplo. Para integrar IA real, conecta con APIs como Claude, OpenAI o Google Gemini.'
-      };
-      
-      const lowerMessage = message.toLowerCase();
-      
-      for (let key in responses) {
-        if (lowerMessage.includes(key)) {
-          return responses[key];
-        }
-      }
-      
-      return responses.default;
     }
 
     // ===== FUNCIONES ORIGINALES DE LA PÁGINA =====

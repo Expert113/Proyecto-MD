@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Social - Grafos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root{
+            --bg:#323232;
+            --panel:#323232;
+            --muted:#9fb4a8;
+            --accent:#667eea;
+            --accent-2:#764ba2;
+            --glass: #323232;
+            --radius:12px;
+            --transition:220ms ease;
+        }
+
+        *{box-sizing:border-box}
+        html,body{
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin:0;
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(180deg,var(--bg), #050607);
+            color: #eaf7ef;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+
+        /* Header / Nav */
+        header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:16px;
+            padding:18px 24px;
+            border-bottom:1px solid rgb(0, 0, 0);
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+            backdrop-filter: blur(4px);
+        }
+        .brand{display:flex;align-items:center;gap:12px}
+        .logo{
+            width:56px;height:56px;border-radius:10px;
+            background:linear-gradient(135deg,#667eea,#764ba2);
+            display:grid;place-items:center;font-weight:800;
+            box-shadow:0 6px 18px rgb(0, 0, 0);
+            color:white;
+            border:1px solid rgba(102,126,234,0.3);
+            font-size:24px;
+        }
+        .brand h1{margin:0;font-size:18px;letter-spacing:0.6px;align-items: center;}
+        .brand p{margin:0;font-size:12px;color:var(--muted);align-items: center;}
+
+        @media (max-width:768px){
+            header{
+                flex-direction:column;
+                padding:12px 16px;
+                gap:12px;
+            }
+            .brand{
+                width:100%;
+                justify-content:center;
+            }
+        }
+
+        /* Layout */
+        .wrap{max-width:1200px;margin:20px auto;padding:0 18px}
+        .grid{display:grid;grid-template-columns:1fr 360px;gap:16px;align-items:start}
+        @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+        @media (max-width:768px){ 
+            .wrap{margin:10px auto;padding:0 12px}
+            .grid{gap:12px}
+        }
+
+        /* Panels */
+        .panel{
+            background: linear-gradient(180deg,var(--panel), rgba(255,255,255,0.01));
+            border-radius:var(--radius);
+            padding:18px;
+            border:1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 10px 40px rgba(2,6,8,0.6);
+        }
+
+        @media (max-width:768px){
+            .panel{
+                padding:14px;
+                border-radius:10px;
+            }
+        }
+
+        .led-frame{
+            position:relative;
+            border-radius:10px;
+            padding:12px;
+            border:1px solid rgba(102,126,234,0.2);
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+        }
+
+        h2{margin:0 0 12px 0;color:#eaf7ef;font-size:20px}
+        h3{margin:0 0 12px 0;color:#ccd6f6;font-size:16px;text-transform:uppercase;letter-spacing:1px}
+        p.small{color:var(--muted);margin:0 0 12px 0;font-size:13px}
+
+        /* Network Visualization */
+        #mynetwork {
+            width: 100%;
+            height: 500px;
+            border: 2px solid rgba(102,126,234,0.3);
+            border-radius: 10px;
+            background: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width:768px){
+            #mynetwork{
+                height: 400px;
+            }
+        }
+
+        /* Controls */
+        .controls-section {
+            background: linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .control-group {
+            margin-bottom: 16px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: block;
+            color: #ccd6f6;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"], input[type="number"] {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(102,126,234,0.5);
+            background: rgba(255,255,255,0.08);
+        }
+
+        input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* Buttons */
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 18px;
+            border-radius:8px;
+            border:0;
+            cursor:pointer;
+            font-weight:600;
+            font-size:14px;
+            background:linear-gradient(135deg, #667eea, #764ba2);
+            color:#ffffff;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+            transition: all 0.2s;
+        }
+
+        .btn:hover{
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+            border: 1px solid rgba(102,126,234,0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .btn-small {
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+
+        /* Mode Buttons */
+        .mode-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 10px 16px;
+            border: 1px solid rgba(102,126,234,0.3);
+            background: transparent;
+            color: var(--muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .info-box {
+            background: rgba(102,126,234,0.1);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #9fb4a8;
+            border: 1px solid rgba(102,126,234,0.2);
+        }
+
+        /* Stats */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 16px 50px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(102,126,234,0.3);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        /* Connections List */
+        .connections-section {
+            margin-top: 20px;
+        }
+
+        .connection-item {
+            background: linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            border: 1px solid rgba(255,255,255,0.03);
+            color: #ccd6f6;
+            font-size: 14px;
+        }
+
+        /* Sidebar */
+        .sidebar .item{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:12px;
+            border-radius:8px;
+            margin-bottom:8px;
+            background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+            border:1px solid rgba(255,255,255,0.02);
+            cursor:pointer;
+            transition: all 0.2s;
+        }
+        .sidebar .item:hover{
+            background:linear-gradient(180deg,rgba(102,126,234,0.1),transparent);
+            border-color: rgba(102,126,234,0.3);
+        }
+        .sidebar .item .label{font-weight:600;font-size:14px}
+
+        footer{
+            margin-top:60px;
+            padding:18px;
+            text-align:center;
+            color:var(--muted);
+            font-size:13px;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+
+        /* Back to top */
+        .back-top {
+            right: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(102,126,234,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+            position: fixed;
+            bottom: 20px;
+            z-index: 100;
+        }
+
+        @media (max-width:768px){
+            .back-top{
+                right: 15px;
+                bottom: 15px;
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        .svgIcon {
+            width: 15px;
+            transition: all 0.3s;
+        }
+        .svgIcon path {
+            fill: #ffffff;
+        }
+
+        .back-top:hover {
+            width: 140px;
+            border-radius: 50px;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width:768px){
+            .back-top:hover{
+                width: 48px;
+                border-radius: 50%;
+            }
+            .back-top::before{
+                display: none;
+            }
+        }
+
+        .back-top:hover .svgIcon {
+            transform: translateY(-200%);
+        }
+
+        @media (max-width:768px){
+            .back-top:hover .svgIcon{
+                transform: translateY(0);
+            }
+        }
+
+        .back-top::before {
+            position: absolute;
+            bottom: -20px;
+            content: "Volver arriba";
+            color: white;
+            font-size: 0px;
+        }
+
+        .back-top:hover::before {
+            font-size: 13px;
+            opacity: 1;
+            bottom: unset;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+                <h1>Visualización de Grafos</h1>
+                <p>Redes interactivas de conexiones</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="panel led-frame">
+            <div class="grid">
+                <!-- Panel principal -->
+                <section>
+                    <h2>Visualización de Red</h2>
+                    <p class="small">Crea y explora redes sociales usando teoría de grafos</p>
+
+                    <div id="mynetwork"></div>
+
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-label">Densidad de Red</div>
+                            <div class="stat-number" id="densidad">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="connections-section">
+                        <h3>Conexiones en la Red</h3>
+                        <div id="listaConexiones">
+                            <div class="connection-item">No hay conexiones aún</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sidebar de controles -->
+                <aside class="sidebar">
+                    <div class="panel">
+                        <h3>Controles</h3>
+
+                        <div class="controls-section">
+                            <div class="control-group">
+                                <label class="control-label">👤 Agregar Persona</label>
+                                <div class="input-row">
+                                    <input type="text" id="nombrePersona" placeholder="Nombre">
+                                    <button class="btn btn-small" onclick="agregarPersona()">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-section">
+                            <div class="control-group">
+                                <label class="control-label">Modo de Interacción</label>
+                                <div class="mode-buttons">
+                                    <button class="mode-btn" onclick="cambiarModo('visualizar')" id="btnVisualizar">👁️</button>
+                                    <button class="mode-btn active" onclick="cambiarModo('conectar')" id="btnConectar">🔗</button>
+                                    <button class="mode-btn" onclick="cambiarModo('eliminar')" id="btnEliminar">🗑️</button>
+                                </div>
+                                <div class="info-box" id="modoInfo">
+                                    Modo Conectar: Haz clic en dos personas para conectarlas
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-section">
+                            <div class="control-group">
+                                <label class="control-label">Red Aleatoria</label>
+                                <div class="input-row">
+                                    <input type="number" id="numPersonas" placeholder="Personas" value="12" min="2" max="30">
+                                    <input type="number" id="numConexiones" placeholder="Conexiones" value="15" min="1" max="100">
+                                </div>
+                                <div class="input-row" style="margin-top:8px">
+                                    <button class="btn btn-small" onclick="generarNuevaRed()" style="flex:1">Generar</button>
+                                    <button class="btn btn-small btn-danger" onclick="limpiarRed()" style="flex:1">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item" onclick="alert('Estadísticas: ' + grafoActual.nodos.length + ' personas, ' + grafoActual.aristas.length + ' conexiones')">
+                            <div class="label">Ver Estadísticas</div>
+                            <div style="opacity:.8">→</div>
+                        </div>
+
+                        <div class="item" onclick="alert('Función en desarrollo')">
+                            <div class="label">Exportar</div>
+                            <div style="opacity:.8">→</div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <footer>
+            © 2025 Mydas • Visualización Interactiva
+        </footer>
+    </main>
+
+    <button class="back-top" onclick="scrollToTop()">
+        <svg class="svgIcon" viewBox="0 0 384 512">
+            <path d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path>
+        </svg>
+    </button>
+
+    <script>
+        const nombres = [
+            "Ana García", "Carlos López", "María Rodríguez", "Juan Martínez",
+            "Laura Hernández", "Pedro Sánchez", "Sofia Torres", "Diego Ramírez",
+            "Valentina Flores", "Miguel Ángel", "Camila Castro", "Andrés Morales"
+        ];
+
+        let network;
+        let grafoActual = { nodos: [], aristas: [] };
+        let modoActual = 'conectar';
+        let nodoSeleccionado = null;
+        let contadorNodos = 0;
+
+        function cambiarModo(modo) {
+            modoActual = modo;
+            nodoSeleccionado = null;
+            
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn${modo.charAt(0).toUpperCase() + modo.slice(1)}`).classList.add('active');
+            
+            const mensajes = {
+                'visualizar': 'Modo Visualizar: Arrastra los nodos para reorganizar la red',
+                'conectar': 'Modo Conectar: Haz clic en dos personas para conectarlas',
+                'eliminar': 'Modo Eliminar: Haz clic en personas o conexiones para eliminarlas'
+            };
+            document.getElementById('modoInfo').textContent = mensajes[modo];
+        }
+
+        function agregarPersona() {
+            const input = document.getElementById('nombrePersona');
+            const nombre = input.value.trim();
+            
+            if (!nombre) {
+                alert('Por favor ingresa un nombre');
+                return;
+            }
+            
+            if (grafoActual.nodos.some(n => n.nombre === nombre)) {
+                alert('Esta persona ya existe en la red');
+                return;
+            }
+            
+            grafoActual.nodos.push({
+                id: contadorNodos++,
+                nombre: nombre,
+                conexiones: 0
+            });
+            
+            input.value = '';
+            visualizarGrafo(grafoActual);
+        }
+
+        function limpiarRed() {
+            if (confirm('¿Estás seguro de que quieres eliminar toda la red?')) {
+                grafoActual = { nodos: [], aristas: [] };
+                contadorNodos = 0;
+                visualizarGrafo(grafoActual);
+            }
+        }
+
+        function crearGrafo() {
+            const numPersonasInput = parseInt(document.getElementById('numPersonas').value) || 3;
+            const numConexionesInput = parseInt(document.getElementById('numConexiones').value) || 3;
+            
+            const numPersonas = Math.min(Math.max(numPersonasInput, 2), 30);
+            const nombresSeleccionados = nombres.slice(0, Math.min(numPersonas, nombres.length));
+            
+            while (nombresSeleccionados.length < numPersonas) {
+                nombresSeleccionados.push(`Persona ${nombresSeleccionados.length + 1}`);
+            }
+            
+            grafoActual = { nodos: [], aristas: [] };
+
+            nombresSeleccionados.forEach((nombre, i) => {
+                grafoActual.nodos.push({
+                    id: i,
+                    nombre: nombre,
+                    conexiones: 0
+                });
+            });
+
+            contadorNodos = nombresSeleccionados.length;
+
+            const conexionesSet = new Set();
+            let intentos = 0;
+            const maxIntentos = numConexionesInput * 10;
+
+            while (conexionesSet.size < numConexionesInput && intentos < maxIntentos) {
+                const id1 = Math.floor(Math.random() * nombresSeleccionados.length);
+                const id2 = Math.floor(Math.random() * nombresSeleccionados.length);
+                
+                if (id1 !== id2) {
+                    const conexion = id1 < id2 ? `${id1}-${id2}` : `${id2}-${id1}`;
+                    conexionesSet.add(conexion);
+                }
+                intentos++;
+            }
+
+            conexionesSet.forEach(conexion => {
+                const [from, to] = conexion.split('-').map(Number);
+                grafoActual.aristas.push({ from, to });
+                grafoActual.nodos[from].conexiones++;
+                grafoActual.nodos[to].conexiones++;
+            });
+
+            return grafoActual;
+        }
+
+        function calcularDensidad(numNodos, numAristas) {
+            const maxAristas = (numNodos * (numNodos - 1)) / 2;
+            return maxAristas > 0 ? ((numAristas / maxAristas) * 100).toFixed(1) : 0;
+        }
+
+        function visualizarGrafo(grafo) {
+            const nodes = new vis.DataSet(
+                grafo.nodos.map(nodo => ({
+                    id: nodo.id,
+                    label: nodo.nombre,
+                    title: `${nodo.nombre}\nConexiones: ${nodo.conexiones}`
+                }))
+            );
+
+            const edges = new vis.DataSet(grafo.aristas.map((arista, index) => ({
+                id: `${arista.from}-${arista.to}`,
+                from: arista.from,
+                to: arista.to
+            })));
+
+            const container = document.getElementById('mynetwork');
+            const data = { nodes, edges };
+            
+            const options = {
+                nodes: {
+                    shape: 'dot',
+                    size: 20,
+                    font: {
+                        size: 14,
+                        color: '#fff'
+                    },
+                    borderWidth: 2,
+                    color: {
+                        background: '#667eea',
+                        border: '#764ba2',
+                        highlight: {
+                            background: '#764ba2',
+                            border: '#667eea'
+                        }
+                    }
+                },
+                edges: {
+                    color: {
+                        color: '#667eea',
+                        highlight: '#764ba2'
+                    },
+                    width: 2,
+                    smooth: {
+                        type: 'continuous'
+                    }
+                },
+                physics: {
+                    stabilization: false,
+                    barnesHut: {
+                        gravitationalConstant: -30000,
+                        springConstant: 0.001,
+                        springLength: 200
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 200
+                }
+            };
+            
+            if (network) {
+                network.destroy();
+            }
+            network = new vis.Network(container, data, options);
+
+            network.on('click', function(params) {
+                if (modoActual === 'conectar' && params.nodes.length > 0) {
+                    const nodoId = params.nodes[0];
+                    
+                    if (nodoSeleccionado === null) {
+                        nodoSeleccionado = nodoId;
+                        network.selectNodes([nodoId]);
+                    } else if (nodoSeleccionado !== nodoId) {
+                        crearConexion(nodoSeleccionado, nodoId);
+                        nodoSeleccionado = null;
+                        network.unselectAll();
+                    } else {
+                        nodoSeleccionado = null;
+                        network.unselectAll();
+                    }
+                } else if (modoActual === 'eliminar') {
+                    if (params.nodes.length > 0) {
+                        eliminarNodo(params.nodes[0]);
+                    } else if (params.edges.length > 0) {
+                        eliminarArista(params.edges[0]);
+                    }
+                }
+            });
+
+            actualizarEstadisticas(grafo);
+        }
+
+        function crearConexion(id1, id2) {
+            const existe = grafoActual.aristas.some(a => 
+                (a.from === id1 && a.to === id2) || (a.from === id2 && a.to === id1)
+            );
+            
+            if (existe) {
+                alert('Esta conexión ya existe');
+                return;
+            }
+            
+            grafoActual.aristas.push({ from: id1, to: id2 });
+            
+            const nodo1 = grafoActual.nodos.find(n => n.id === id1);
+            const nodo2 = grafoActual.nodos.find(n => n.id === id2);
+            if (nodo1) nodo1.conexiones++;
+            if (nodo2) nodo2.conexiones++;
+            
+            visualizarGrafo(grafoActual);
+        }
+
+        function eliminarNodo(nodoId) {
+            if (!confirm('¿Eliminar esta persona y todas sus conexiones?')) return;
+            
+            grafoActual.aristas = grafoActual.aristas.filter(a => 
+                a.from !== nodoId && a.to !== nodoId
+            );
+            
+            grafoActual.nodos = grafoActual.nodos.filter(n => n.id !== nodoId);
+            
+            grafoActual.nodos.forEach(n => n.conexiones = 0);
+            grafoActual.aristas.forEach(a => {
+                const nodo1 = grafoActual.nodos.find(n => n.id === a.from);
+                const nodo2 = grafoActual.nodos.find(n => n.id === a.to);
+                if (nodo1) nodo1.conexiones++;
+                if (nodo2) nodo2.conexiones++;
+            });
+            
+            visualizarGrafo(grafoActual);
+        }
+
+        function eliminarArista(aristaId) {
+            const arista = grafoActual.aristas.find((a, i) => {
+                const id = `${a.from}-${a.to}`;
+                return id === aristaId || `${a.to}-${a.from}` === aristaId;
+            });
+            
+            if (!arista) return;
+            
+            grafoActual.aristas = grafoActual.aristas.filter(a => 
+                !(a.from === arista.from && a.to === arista.to)
+            );
+            
+            const nodo1 = grafoActual.nodos.find(n => n.id === arista.from);
+            const nodo2 = grafoActual.nodos.find(n => n.id === arista.to);
+            if (nodo1) nodo1.conexiones--;
+            if (nodo2) nodo2.conexiones--;
+            
+            visualizarGrafo(grafoActual);
+        }
+
+        function actualizarEstadisticas(grafo) {
+            const numNodos = grafo.nodos.length;
+            const numAristas = grafo.aristas.length;
+            const densidad = calcularDensidad(numNodos, numAristas);
+
+            const elemDensidad = document.getElementById('densidad');
+            if (elemDensidad) {
+                elemDensidad.textContent = densidad + '%';
+            }
+
+            const listaDiv = document.getElementById('listaConexiones');
+            if (listaDiv) {
+                if (numAristas === 0) {
+                    listaDiv.innerHTML = '<div class="connection-item">No hay conexiones aún</div>';
+                } else {
+                    listaDiv.innerHTML = grafo.aristas.map(arista => {
+                        const nodo1 = grafo.nodos.find(n => n.id === arista.from);
+                        const nodo2 = grafo.nodos.find(n => n.id === arista.to);
+                        const nombre1 = nodo1 ? nodo1.nombre : 'Desconocido';
+                        const nombre2 = nodo2 ? nodo2.nombre : 'Desconocido';
+                        return `<div class="connection-item">${nombre1} ↔ ${nombre2}</div>`;
+                    }).join('');
+                }
+            }
+        }
+
+        // Generar nueva red
+        function generarNuevaRed() {
+            crearGrafo();
+            visualizarGrafo(grafoActual);
+        }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            generarNuevaRed();
+        };
+    </script>
+</body>
+</html>

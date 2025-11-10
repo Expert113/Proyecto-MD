@@ -10,7 +10,7 @@ class Servidor(BaseHTTPRequestHandler):
         if self.path == '/':
             try:
                 # Ajustamos la ruta al archivo HTML
-                html_path = os.path.join(os.path.dirname(__file__), '..', 'Vista', 'ACCESO WEB', 'registro.html')
+                html_path = os.path.join(os.path.dirname(__file__), '..', 'Vista', 'ACCESO WEB', 'Pg.Registro.html')
                 with open(html_path, 'rb') as f:
                     self.send_response(200)
                     self.send_header('Content-type', 'text/html')
